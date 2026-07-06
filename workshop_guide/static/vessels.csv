@@ -1,0 +1,21 @@
+vessel_id,vessel_name,imo_number,shipping_line,vessel_type,max_teu,flag_state,year_built
+V001,Algoma Guardian,9200000,Algoma Central,container,2500,Canada,2007
+V002,CSL Welland,9201111,CSL Group,bulk_carrier,1500,Canada,2015
+V003,Federal Biscay,9202222,Fednav,general_cargo,3500,Canada,2004
+V004,Seaway Queen,9203333,Seaway Marine,general_cargo,4000,Marshall Islands,2016
+V005,Laker Ontario,9204444,Great Lakes Shipping,bulk_carrier,2500,Canada,2015
+V006,Thunder Bay Express,9205555,Thunder Bay Shipping,bulk_carrier,2000,Panama,2012
+V007,Great Lakes Trader,9206666,Upper Lakes Group,bulk_carrier,2500,Canada,2003
+V008,St. Clair Voyager,9207777,Voyageur Maritime,bulk_carrier,3500,Canada,2017
+V009,Erie Navigator,9208888,Erie Navigation,tanker,2000,Canada,2006
+V010,Huron Spirit,9209999,Huron Transport,bulk_carrier,1500,Canada,2022
+V011,Frontenac,9211110,Canada Steamship Lines,general_cargo,3000,Panama,2022
+V012,Spruceglen,9212221,Algoma Central,general_cargo,1500,Canada,2022
+V013,Oakglen,9213332,CSL Group,bulk_carrier,4000,Canada,2002
+V014,Pineglen,9214443,CSL Group,bulk_carrier,3500,Bahamas,2002
+V015,Cedarglen,9215554,CSL Group,general_cargo,1500,Canada,2014
+V016,Atlantic Huron,9216665,Algoma Central,general_cargo,1500,Canada,2016
+V017,Baie St. Paul,9217776,Fednav,bulk_carrier,3000,Panama,2019
+V018,Rt. Hon. Paul J. Martin,9218887,CSL Group,general_cargo,2000,Canada,2018
+V019,Champlain,9219998,Desgagnes,tanker,3000,Marshall Islands,2004
+V020,Richelieu,9221109,Desgagnes,tanker,1500,Canada,2001

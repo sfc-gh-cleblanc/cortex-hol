@@ -17,7 +17,7 @@ st.markdown("""
 In this session, you'll create a Cortex Agent using the Snowsight UI. The agent will use your semantic view from Session 3 as a tool, enabling conversational claims analytics.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 1: Open the Agent Builder")
 with st.container(border=True):
@@ -27,7 +27,7 @@ with st.container(border=True):
 3. Click **Create Agent** (or the **+** button)
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 2: Configure the agent")
 with st.container(border=True):
@@ -37,7 +37,7 @@ with st.container(border=True):
 3. **Model**: Select `auto` (lets Snowflake choose the best available model)
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 3: Add the semantic view as a tool")
 with st.container(border=True):
@@ -48,7 +48,7 @@ with st.container(border=True):
 4. This gives the agent the ability to query your claims data via natural language
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 4: Write agent instructions")
 with st.container(border=True):
@@ -77,7 +77,7 @@ Domain context:
 ```
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 5: Add sample questions")
 with st.container(border=True):
@@ -90,7 +90,7 @@ Add these sample questions to help users understand what the agent can do:
 4. "Show me the monthly trend in claim volume for 2025"
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 6: Test the agent")
 with st.container(border=True):
@@ -106,7 +106,7 @@ Use the built-in chat interface to test your agent with these queries:
 Observe how the agent routes each question to the semantic view, generates SQL, and synthesizes a conversational response.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 7: Save and publish")
 with st.container(border=True):

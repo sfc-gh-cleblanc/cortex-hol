@@ -28,7 +28,7 @@ for title, duration, session_num in AGENDA:
         col1.markdown(f":gray[{title}]")
         col2.markdown(f":gray-badge[{duration}]")
 
-st.space("medium")
+st.write(""); st.write("")
 
 st.markdown("##### What you'll build")
 st.markdown("""
@@ -41,7 +41,7 @@ st.markdown("""
 | **Streamlit Apps** | 1 | Claims dashboard with KPIs and charts |
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Total duration")
 with st.container(border=True):

@@ -3,7 +3,7 @@ import streamlit as st
 st.title("Getting Started")
 st.markdown("Provision a Snowflake account for the workshop")
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Step 1: Sign up for a free trial")
 
@@ -22,7 +22,7 @@ On the **Choose your Snowflake edition** screen, select:
 Enterprise edition is recommended because it includes all the AI/ML features we use in this workshop.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Step 2: Activate your account")
 
@@ -33,7 +33,7 @@ After submitting the form, Snowflake sends an **activation link** to the email a
 :material/info: The activation email typically arrives within a few minutes. Check your spam folder if you don't see it.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Step 3: Open Cortex Code")
 
@@ -44,7 +44,7 @@ Once logged in to Snowsight, open **Cortex Code** from the left navigation panel
 Confirm you are using the **ACCOUNTADMIN** role — you can check and switch roles in the bottom-left of the Snowsight UI.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Step 4: Enable cross-region inference")
 
@@ -59,7 +59,7 @@ ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'ANY_REGION';
 This allows Snowflake to route LLM requests to the nearest available region if the model is not hosted in your account's home region.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Free trial details")
 

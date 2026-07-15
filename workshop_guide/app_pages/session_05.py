@@ -21,7 +21,7 @@ CoWork provides a chat-based interface that leverages your Cortex Agent to query
 Paste each question below into CoWork one at a time and observe how it generates queries and visualizations.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### :material/chat: Questions to ask CoWork")
 st.caption("Copy and paste each question into CoWork individually. They build on each other in sequence.")
@@ -40,7 +40,7 @@ for title, question in questions:
         st.markdown(f"**{title}**")
         st.code(question, language="text", wrap_lines=True)
 
-st.space("small")
+st.write("")
 
 render_explanation("How CoWork works", """
 **CoWork** is Snowflake's collaborative AI workspace. It uses your Cortex Agents to provide interactive data exploration.

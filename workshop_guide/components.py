@@ -85,7 +85,7 @@ def render_session_header(
     col1, col2 = st.columns(2)
     col1.markdown(f":material/schedule: **{duration}**")
     col2.markdown(f":material/construction: **Building**: {building}")
-    st.space("small")
+    st.write("")
 
 
 def render_key_concepts(concepts: list[dict]):

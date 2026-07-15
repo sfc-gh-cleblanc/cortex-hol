@@ -3,14 +3,14 @@ import streamlit as st
 st.title("Health Insurance Claims AI Workshop")
 st.markdown("Building Intelligence for Claims Analysis with Snowflake Cortex")
 
-st.space("small")
+st.write("")
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Sections", "6", help="Hands-on lab sections")
 col2.metric("Prompts", "10", help="Total prompts across all tools")
 col3.metric("Duration", "~4 hrs", help="Total workshop time including break")
 
-st.space("medium")
+st.write(""); st.write("")
 
 st.markdown("#### How this workshop works")
 
@@ -24,7 +24,7 @@ Each section has **numbered prompts** that you copy and paste into the appropria
 All sections build on each other sequentially — work through them in order.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### The scenario")
 with st.container(border=True):
@@ -42,7 +42,7 @@ We'll build a complete AI-powered claims intelligence platform covering:
 | **Reference** | CDT procedure codes, plan types, provider networks |
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### What we're building")
 
@@ -63,7 +63,7 @@ In this workshop, we build a complete AI-powered claims analytics platform:
 **6. Operations Dashboard** — Deploy a Streamlit app with live KPIs, charts, and AI-powered insights.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("#### Prerequisites")
 with st.container(border=True):
@@ -73,5 +73,5 @@ with st.container(border=True):
 - Cross-region inference enabled (for Cortex LLM functions)
 """)
 
-st.space("medium")
+st.write(""); st.write("")
 st.caption("Sun Life DentaQuest Workshop — July 20, 2026")

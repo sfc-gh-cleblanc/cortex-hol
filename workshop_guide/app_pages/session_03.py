@@ -17,7 +17,7 @@ st.markdown("""
 In this session, you'll use the **Semantic View Autopilot** to create a semantic view over your claims data — no SQL required. The Autopilot analyzes your tables and generates a complete semantic view with relationships, metrics, and dimensions.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 1: Open the Semantic View Autopilot")
 with st.container(border=True):
@@ -28,7 +28,7 @@ with st.container(border=True):
 4. Select **Autopilot** as the creation method
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 2: Select your tables")
 with st.container(border=True):
@@ -43,7 +43,7 @@ with st.container(border=True):
 3. Click **Generate** to let the Autopilot analyze your data
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 3: Review the generated semantic view")
 with st.container(border=True):
@@ -59,7 +59,7 @@ The Autopilot will generate:
 **Review and accept** the generated view. You can make adjustments if needed, but the Autopilot typically produces a good starting point.
 """)
 
-st.space("small")
+st.write("")
 
 st.markdown("##### Step 4: Save the semantic view")
 with st.container(border=True):

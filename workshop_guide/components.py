@@ -3,8 +3,8 @@ import streamlit as st
 SESSION_PROMPTS = {
     1: ["Prompt 1.1", "Prompt 1.2", "Prompt 1.3"],
     2: ["Prompt 2.1", "Prompt 2.2", "Prompt 2.3"],
-    3: ["Prompt 3.1", "Prompt 3.2", "Prompt 3.3"],
-    4: ["Prompt 4.1", "Prompt 4.2", "Prompt 4.3"],
+    3: ["Prompt 3.1"],
+    4: [],
     5: [],
     6: ["Prompt 6.1", "Prompt 6.2"],
 }
@@ -78,13 +78,12 @@ def render_technologies_used(technologies: list[dict]):
 def render_session_header(
     session_num: int,
     title: str,
-    time_range: str,
     duration: str,
     building: str,
 ):
     st.title(f"Session {session_num}: {title}")
     col1, col2 = st.columns(2)
-    col1.markdown(f":material/schedule: **{time_range}** ({duration})")
+    col1.markdown(f":material/schedule: **{duration}**")
     col2.markdown(f":material/construction: **Building**: {building}")
     st.space("small")
 

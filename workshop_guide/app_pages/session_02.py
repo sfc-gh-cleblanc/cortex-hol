@@ -1,130 +1,197 @@
 import streamlit as st
 from components import render_session_header, render_prompt, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
 
-render_session_header(2, "Cortex Analyst & Semantic Views", "9:10 - 9:35 AM", "25 min", "Semantic view with relationships, metrics, and natural language queries")
+render_session_header(2, "AI SQL", "40 min", "Structured data extraction from unstructured claims text using Cortex AI functions")
 
 render_technologies_used([
-    {"name": "Cortex Analyst", "description": "Snowflake's text-to-SQL engine that converts natural language questions into SQL queries. Uses a semantic view to understand your data's business meaning, relationships, and metrics.", "icon": "chat"},
-    {"name": "Semantic View", "description": "A first-class Snowflake object (CREATE SEMANTIC VIEW) that describes your data in business terms: tables, relationships, facts, dimensions, metrics, and synonyms. The bridge between natural language and SQL.", "icon": "description"},
-    {"name": "AI_SQL_GENERATION", "description": "Custom instructions embedded in the semantic view that guide how Cortex Analyst generates SQL — providing domain context, business rules, and disambiguation hints.", "icon": "auto_fix_high"},
+    {"name": "AI_EXTRACT", "description": "Extracts structured fields from unstructured text or documents. Define a responseFormat schema and get clean JSON back. Works on text columns and staged files via TO_FILE().", "icon": "auto_fix_high"},
+    {"name": "AI_CLASSIFY", "description": "Classifies text into predefined categories. Useful for triaging claims by type, urgency, or department without manual rules.", "icon": "category"},
+    {"name": "Batch Processing", "description": "Apply AI functions across entire tables to materialize extracted insights at scale. Creates queryable structured data from unstructured sources.", "icon": "view_timeline"},
 ])
 
 
-PROMPT_2_1 = """In PORT_YTO_AI.PORT_OPS, create a semantic view called PORT_OPERATIONS_VIEW for use with Cortex Analyst. It should cover these tables: CONTAINER_MANIFESTS, CARGO_INVOICES, RAIL_SCHEDULES, TERMINALS, VESSELS, CRANE_UTILIZATION, TRUCK_QUEUE_TIMES.
+PROMPT_2_1 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, use Cortex AI functions to extract structured data from the CLAIM_NOTES table.
 
-Include:
-- Proper relationships between the tables (manifests join to terminals via destination_terminal = terminal_id, manifests join to vessels via vessel_id, invoices join to manifests via manifest_id, crane_utilization joins to terminals via terminal_id, truck_queue_times joins to terminals via terminal_id)
-- Facts for all key numeric columns: container_count, teu_count, weight_tonnes, declared_value_cad, actual/estimated berth time hours, invoice values, moves_per_hour, utilization_pct, trucks_in_queue, avg_wait_minutes
-- Dimensions for categorical columns like cargo_category, cbsa_declaration_status, terminal_name, shipping_line, railway, destination_city, weather_condition, operator_shift, and all date/time columns
-- Add useful SYNONYMS on dimensions where users might use different terms (e.g. terminal_name could also be called 'dock' or 'berth', shipping_line could be 'carrier', cargo_category could be 'goods type')
-- Metrics with pre-aggregated calculations: total TEU, total containers, average berth time, total trade value, shipment count, average crane utilization, average wait time
-- Descriptive COMMENTs on every table, fact, dimension, and metric explaining the business meaning
-- An AI_SQL_GENERATION instruction that provides domain context: this is Port of Toronto data on the Lake Ontario, CBSA means Canada Border Services Agency, peak season is Jun-Oct (Great Lakes shipping season), key terminals are Terminal 51/Cherry Street/Port Lands/Outer Harbour/Commissioners Street, support English queries queries
+The NOTE_TEXT column contains free-text clinical narratives written by dental adjusters. Use AI_EXTRACT to pull out structured fields from these notes.
 
-Execute the SQL and confirm with DESCRIBE SEMANTIC VIEW."""
+1. First, show me 5 sample rows from CLAIM_NOTES so we can see the text format.
 
-render_prompt("Prompt 2.1", "Create the Semantic View", PROMPT_2_1)
+2. Then run AI_EXTRACT on 5 sample notes with this responseFormat:
+   - tooth_number: "What tooth number is referenced (e.g., #14, #3)?"
+   - procedure_type: "What dental procedure is being discussed or recommended?"
+   - clinical_finding: "What is the primary clinical finding or diagnosis?"
+   - pre_auth_required: "Is pre-authorization required? (yes/no/not mentioned)"
+   - urgency: "How urgent is the treatment? (routine/urgent/emergency)"
+
+3. Show the extracted JSON results alongside the original text so we can verify accuracy.
+
+Execute all SQL and show the results."""
+
+render_prompt("Prompt 2.1", "Extract Structured Data from Claim Notes", PROMPT_2_1)
 
 render_explanation("What this prompt does", """
-Creates a **semantic view** — a first-class Snowflake object that enables natural language to SQL:
+Uses **AI_EXTRACT** to transform unstructured clinical narratives into structured data:
 
-**Key components of a semantic view**:
-
-- **TABLES**: Logical tables with aliases, primary keys, and comments
-- **RELATIONSHIPS**: Foreign key joins between tables (e.g., manifests -> terminals)
-- **FACTS**: Raw numeric columns available for computation (teu_count, weight_tonnes)
-- **DIMENSIONS**: Categorical and temporal columns for grouping/filtering, with optional synonyms
-- **METRICS**: Pre-defined aggregations (SUM, AVG, COUNT) that Cortex Analyst can use directly
-- **AI_SQL_GENERATION**: Custom instructions that guide how Analyst generates SQL
-
-**Synonyms** help Cortex Analyst understand different ways users refer to the same concept:
 ```sql
-t.terminal_name ... WITH SYNONYMS = ('terminal', 'dock', 'berth')
+SELECT
+    note_id,
+    LEFT(note_text, 80) AS note_preview,
+    AI_EXTRACT(
+        text => note_text,
+        responseFormat => {
+            'tooth_number': 'What tooth number is referenced?',
+            'procedure_type': 'What dental procedure is discussed or recommended?',
+            'clinical_finding': 'What is the primary clinical finding or diagnosis?',
+            'pre_auth_required': 'Is pre-authorization required? (yes/no/not mentioned)',
+            'urgency': 'How urgent is the treatment? (routine/urgent/emergency)'
+        }
+    ) AS extracted
+FROM CLAIM_NOTES
+LIMIT 5;
 ```
 
-**Facts vs Metrics**:
-- Facts are raw columns (e.g., `teu_count`) — building blocks
-- Metrics are pre-defined aggregations (e.g., `SUM(teu_count)`) — ready-to-use calculations
+**How AI_EXTRACT works**:
+- You define a `responseFormat` — a JSON object where keys are field names and values are natural language descriptions of what to extract
+- The model reads the text and returns structured JSON matching your schema
+- It uses the `arctic-extract` model automatically (no model selection needed)
+- Works on any text: clinical notes, emails, reports, legal documents
+
+**Key insight**: The quality of your responseFormat descriptions directly impacts extraction accuracy. Be specific about format expectations (e.g., "tooth number as #N" vs just "tooth").
 """)
 
 
-PROMPT_2_2 = """Ask Cortex Analyst these questions using PORT_YTO_AI.PORT_OPS.PORT_OPERATIONS_VIEW:
+PROMPT_2_2 = """Now let's do two more AI operations in DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS:
 
-1. "What are the top 5 terminals by total TEU volume?"
-2. "Which shipping lines have the most containers with pending CBSA declarations?"
-3. "What is the average truck queue wait time during peak hours vs off-peak?"
-4. "What cargo categories have the highest average declared value per shipment?" 
+PART A - Classify claims by type:
+Use AI_CLASSIFY on the NOTE_TEXT from CLAIM_NOTES to categorize each note into one of these categories: 'Routine Preventive', 'Restorative', 'Emergency', 'Surgical', 'Orthodontic', 'Periodontic'.
+Show the top 10 results with the classification and confidence.
 
-Show the generated SQL and results for each."""
+PART B - Extract from staged documents:
+The claim_documents folder has been uploaded to a stage called CLAIM_DOCS. First create this stage, then list its contents. Upload instructions: these are .txt files containing EOBs, clinical narratives, and appeal letters.
 
-render_prompt("Prompt 2.2", "Test with Natural Language Queries", PROMPT_2_2)
+Then use AI_EXTRACT with TO_FILE() on 3 of the staged documents to extract:
+- document_type: "What type of document is this? (EOB, clinical narrative, appeal letter)"
+- member_name: "What is the patient/member name?"
+- procedure_code: "What CDT procedure code is referenced?"
+- claim_amount: "What is the billed or claimed dollar amount?"
+- outcome: "What was the outcome or decision? (approved/denied/pending/not stated)"
 
-st.info("""
-:material/lightbulb: **You can also test these in the Cortex Analyst UI!**
+Execute all SQL and show results."""
 
-In Snowsight, navigate to **AI & ML → Cortex Analyst** in the left sidebar. Select your `PORT_OPERATIONS_VIEW` semantic view, and you'll see a playground where you can type natural language questions and see the generated SQL and results interactively. Try pasting the questions above directly into that playground.
-""")
+render_prompt("Prompt 2.2", "Classify Claims & Extract from Documents", PROMPT_2_2)
 
 render_explanation("What this prompt does", """
-Tests Cortex Analyst across different question types:
+Demonstrates two additional AI patterns:
 
-1. **"Top 5 terminals by TEU"** — Tests the `total_teu` metric and `terminal_name` dimension with a JOIN between manifests and terminals.
-
-2. **"Pending CBSA by shipping line"** — Tests filtering on `cbsa_declaration_status` dimension and grouping by `shipping_line` with a JOIN to vessels.
-
-3. **"Truck wait time peak vs off-peak"** — Tests the TRUCK_QUEUE_TIMES table with `is_peak_hour` as a grouping dimension and `avg_wait_minutes` as a fact.
-
-4. **Cargo value query** — Tests a different aggregation pattern (AVG on declared_value_cad grouped by cargo_category).
-
-**What to observe**: Look at the generated SQL — does it correctly identify which tables to join, which metrics to use, and how to filter? This demonstrates the power of the semantic layer.
-""")
-
-
-PROMPT_2_3 = """Now expand our PORT_OPERATIONS_VIEW semantic view in PORT_YTO_AI.PORT_OPS to also include the RAIL_SCHEDULES table with proper relationships and definitions.
-
-1. Query INFORMATION_SCHEMA.COLUMNS to get the full schema of RAIL_SCHEDULES
-2. Recreate PORT_OPERATIONS_VIEW with all original definitions plus RAIL_SCHEDULES, adding:
-   - Relationship to TERMINALS via origin_terminal = terminal_id
-   - Facts: num_containers, num_rail_cars
-   - Dimensions: railway (with synonym 'rail company'), destination_city, cargo_type, status, delay_reason, departure/arrival datetimes
-   - Metrics: total rail containers, average containers per train, delay rate (% with non-null delay_reason)
-   - Appropriate comments
-
-3. Test the expanded view by asking: "What percentage of rail shipments are delayed and what are the most common delay reasons?"
-
-Execute all SQL and show the result."""
-
-render_prompt("Prompt 2.3", "Expand the Semantic View", PROMPT_2_3)
-
-render_explanation("What this prompt does", """
-Demonstrates the **iterative semantic view development cycle**: expand the view, then immediately test.
-
-**The expansion pattern**:
-1. Check what columns exist in the new table via INFORMATION_SCHEMA
-2. Recreate the view with CREATE OR REPLACE SEMANTIC VIEW
-3. Add the new table, relationship, facts, dimensions, metrics
-4. Test to confirm Analyst can now answer questions about rail data
-
-**Key insight**: A semantic view is only as good as the tables and definitions it contains. When users ask about rail delays but RAIL_SCHEDULES isn't in the view, Analyst can't help. After expansion, it can.
-
-**The delay rate metric** is interesting because it's a calculated metric:
+**Part A — AI_CLASSIFY**:
 ```sql
-METRIC delay_rate = COUNT_IF(delay_reason IS NOT NULL) / COUNT(*) * 100
+SELECT
+    note_id,
+    LEFT(note_text, 60) AS preview,
+    AI_CLASSIFY(
+        text => note_text,
+        categories => ['Routine Preventive', 'Restorative', 'Emergency',
+                       'Surgical', 'Orthodontic', 'Periodontic']
+    ) AS classification
+FROM CLAIM_NOTES
+LIMIT 10;
 ```
-This shows that metrics can be complex expressions, not just simple aggregations.
+
+AI_CLASSIFY returns a JSON object with `label` (the chosen category) and `score` (confidence 0-1).
+
+**Part B — Document extraction with TO_FILE()**:
+```sql
+SELECT
+    RELATIVE_PATH,
+    AI_EXTRACT(
+        file => TO_FILE('@CLAIM_DOCS', RELATIVE_PATH),
+        responseFormat => {
+            'document_type': 'What type of document is this?',
+            'member_name': 'What is the patient/member name?',
+            'procedure_code': 'What CDT procedure code is referenced?',
+            'claim_amount': 'What is the billed dollar amount?',
+            'outcome': 'What was the outcome? (approved/denied/pending/not stated)'
+        }
+    ) AS extracted
+FROM DIRECTORY('@CLAIM_DOCS')
+LIMIT 3;
+```
+
+**When to use AI_EXTRACT vs AI_CLASSIFY**:
+- **AI_EXTRACT**: Pull multiple structured fields from text (extraction)
+- **AI_CLASSIFY**: Assign text to one of N predefined categories (classification)
+""")
+
+
+PROMPT_2_3 = """Now let's build a batch extraction pipeline in DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.
+
+Create a materialized table called EXTRACTED_CLAIM_INSIGHTS that runs AI_EXTRACT across ALL rows in CLAIM_NOTES and flattens the results into proper columns:
+
+1. Run AI_EXTRACT on the full CLAIM_NOTES table with the same responseFormat from Prompt 2.1 (tooth_number, procedure_type, clinical_finding, pre_auth_required, urgency)
+
+2. Flatten the extracted JSON into individual columns using ::VARCHAR casting
+
+3. Include the original note_id, claim_id, adjuster, and created_date alongside the extracted fields
+
+4. Create this as a table: CREATE TABLE EXTRACTED_CLAIM_INSIGHTS AS SELECT ...
+
+5. After creation, show the row count and a sample of 10 rows from the new table.
+
+Execute all SQL."""
+
+render_prompt("Prompt 2.3", "Batch Extraction Pipeline", PROMPT_2_3)
+
+render_explanation("What this prompt does", """
+Creates a materialized extraction table — the core pattern for production AI pipelines:
+
+```sql
+CREATE OR REPLACE TABLE EXTRACTED_CLAIM_INSIGHTS AS
+SELECT
+    cn.note_id,
+    cn.claim_id,
+    cn.adjuster,
+    cn.created_date,
+    extracted:tooth_number::VARCHAR AS tooth_number,
+    extracted:procedure_type::VARCHAR AS procedure_type,
+    extracted:clinical_finding::VARCHAR AS clinical_finding,
+    extracted:pre_auth_required::VARCHAR AS pre_auth_required,
+    extracted:urgency::VARCHAR AS urgency
+FROM (
+    SELECT
+        *,
+        AI_EXTRACT(
+            text => note_text,
+            responseFormat => {
+                'tooth_number': 'What tooth number is referenced?',
+                'procedure_type': 'What dental procedure is discussed?',
+                'clinical_finding': 'What is the primary clinical finding?',
+                'pre_auth_required': 'Is pre-authorization required? (yes/no/not mentioned)',
+                'urgency': 'How urgent? (routine/urgent/emergency)'
+            }
+        ) AS extracted
+    FROM CLAIM_NOTES
+) cn;
+```
+
+**Why materialize?** Running AI_EXTRACT on every query would be slow and expensive. By materializing once, you:
+- Pay for extraction once, query the results for free
+- Enable downstream joins and analytics on extracted fields
+- Can refresh periodically as new notes arrive (or use Dynamic Tables for automation)
+
+**Production pattern**: In production, you would use a **Dynamic Table** or **Stream + Task** to incrementally process new claim notes as they arrive, rather than reprocessing the full table.
 """)
 
 
 render_key_concepts([
-    {"term": "Cortex Analyst", "definition": "Snowflake's text-to-SQL engine. Takes natural language questions and generates SQL queries using a semantic view for context. Supports aggregations, joins, filtering, time-series analysis, and and diverse query types."},
-    {"term": "Semantic View", "definition": "A first-class Snowflake object (CREATE SEMANTIC VIEW) that maps database tables to business concepts. Contains table definitions, relationships, facts, dimensions, metrics, synonyms, and AI instructions."},
-    {"term": "Fact vs Dimension vs Metric", "definition": "Facts are raw numeric columns (teu_count). Dimensions are categorical/temporal columns for grouping and filtering (terminal_name, arrival_date). Metrics are pre-defined aggregations over facts (SUM(teu_count), AVG(wait_time))."},
-    {"term": "AI_SQL_GENERATION", "definition": "Custom instructions embedded in the semantic view that guide SQL generation. Use this to provide domain-specific context, define business rules, and help with ambiguous terms."},
+    {"term": "AI_EXTRACT", "definition": "A Cortex AI function that extracts structured fields from unstructured text or files. You define a responseFormat schema (field names + descriptions) and it returns JSON. Uses the arctic-extract model automatically."},
+    {"term": "AI_CLASSIFY", "definition": "A Cortex AI function that assigns text to one of N predefined categories. Returns the chosen label and a confidence score (0-1). No model selection needed."},
+    {"term": "TO_FILE()", "definition": "A function that creates a file reference from a stage path. Used with AI_EXTRACT and AI_COMPLETE to process staged documents (PDFs, images, text files) rather than text columns."},
+    {"term": "Batch Extraction", "definition": "The pattern of running AI functions across an entire table and materializing results into a new table. Converts unstructured data into queryable structured columns at scale."},
 ])
 
 render_what_you_built([
-    "PORT_OPERATIONS_VIEW semantic view with 7 tables and relationships",
-    "Natural language queries in English",
-    "Expanded view with RAIL_SCHEDULES and delay metrics",
-    "Iterative semantic view development pattern",
+    "AI_EXTRACT pipeline extracting 5 fields from clinical notes",
+    "AI_CLASSIFY categorizing claims into 6 procedure types",
+    "Document extraction from staged .txt files using TO_FILE()",
+    "EXTRACTED_CLAIM_INSIGHTS materialized table (200 rows of structured extractions)",
 ])

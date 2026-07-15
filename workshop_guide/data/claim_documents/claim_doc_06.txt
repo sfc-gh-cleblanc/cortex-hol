@@ -1,0 +1,18 @@
+CLINICAL NARRATIVE - APPEAL DOCUMENTATION
+Patient: Ashley Johnson
+DOB: 1966-04-29
+Tooth: #31
+Procedure: D3346 - Retreatment of previous root canal therapy - anterior
+
+Clinical Findings:
+Patient presented on 2025-08-12 with chief complaint of sensitivity to hot and cold. Clinical examination revealed recurrent decay beneath existing crown. Radiographic evaluation confirmed horizontal bone loss exceeding 50%.
+
+Treatment Rationale:
+The recommended procedure (Retreatment of previous root canal therapy - anterior) is medically necessary because the existing restoration has failed and the remaining tooth structure is insufficient. Alternative treatments considered include pulp capping, however these were deemed inadequate due to poor long-term prognosis with conservative approach.
+
+Prognosis:
+With appropriate treatment, prognosis is good. Without treatment, patient risks spread of infection to adjacent teeth.
+
+Submitted by: Dr. Donald Davis, Orthodontics
+NPI: 1394966219
+Date: 2025-08-22

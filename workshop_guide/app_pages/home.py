@@ -1,27 +1,27 @@
 import streamlit as st
 
-st.title("Port of Toronto AI Workshop")
-st.markdown("Building Intelligence for Canada's Great Lakes Gateway with Snowflake Cortex")
+st.title("Health Insurance Claims AI Workshop")
+st.markdown("Building Intelligence for Claims Analysis with Snowflake Cortex")
 
 st.space("small")
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Sections", "6", help="Hands-on lab sections")
-col2.metric("Prompts", "16", help="Total prompts across all tools")
-col3.metric("Duration", "2.5 hrs", help="Total workshop time")
+col2.metric("Prompts", "10", help="Total prompts across all tools")
+col3.metric("Duration", "~4 hrs", help="Total workshop time including break")
 
 st.space("medium")
 
 st.markdown("#### How this workshop works")
 
 st.markdown("""
-Each section has **numbered prompts** that you copy and paste into the appropriate tool:
+Each section has **numbered prompts** that you copy and paste into the appropriate tool, or **step-by-step UI instructions** to follow in Snowsight:
 
 - **Cortex Code** — for building infrastructure, creating objects, and writing SQL/Python
-- **Cortex Analyst** — for testing natural language queries against your semantic view
+- **Snowsight UI** — for creating semantic views (Autopilot) and agents
 - **Snowflake CoWork** — for collaborative data exploration and analysis
 
-All prompts build on each other sequentially — run them in order throughout the morning.
+All sections build on each other sequentially — work through them in order.
 """)
 
 st.space("small")
@@ -29,18 +29,17 @@ st.space("small")
 st.markdown("#### The scenario")
 with st.container(border=True):
     st.markdown("""
-The **Port of Toronto** is a vital Great Lakes port operated by PortsToronto, handling bulk goods,
-containers, and general cargo via the St. Lawrence Seaway system. Located on Toronto's waterfront
-along Lake Ontario, it connects the Greater Toronto Area with Great Lakes and international shipping
-routes, supporting the region's manufacturing, construction, and consumer supply chains.
+**Sun Life DentaQuest** processes millions of dental insurance claims annually. Claims analysts need to
+extract insights from clinical notes, identify patterns in denials, monitor provider performance, and
+detect potential fraud or waste — all while maintaining fast adjudication turnaround times.
 
-We'll build a complete AI platform covering:
+We'll build a complete AI-powered claims intelligence platform covering:
 
 | Data type | Examples |
 |-----------|---------|
-| **Structured** | Container manifests, shipping schedules, CBSA declarations, cargo invoices, CN/CP Rail schedules |
-| **Unstructured** | CBSA inspection reports, marine safety reports, incident logs |
-| **Time series** | Crane utilization, truck queue times |
+| **Structured** | Member enrollment, claims, providers, dental procedures, adjudication outcomes |
+| **Unstructured** | Clinical narratives, adjuster notes, member appeals, EOB documents |
+| **Reference** | CDT procedure codes, plan types, provider networks |
 """)
 
 st.space("small")
@@ -49,19 +48,19 @@ st.markdown("#### What we're building")
 
 with st.container(border=True):
     st.markdown("""
-In 2.5 hours, we build a complete AI-powered operations platform:
+In this workshop, we build a complete AI-powered claims analytics platform:
 
-**1. Data Foundation** — Load structured and unstructured port operations data into Snowflake from pre-generated CSV files.
+**1. Data Foundation** — Load structured claims data and unstructured clinical documents into Snowflake.
 
-**2. Natural Language Analytics** — Create a Semantic View over operational tables and query them with plain English via Cortex Analyst.
+**2. AI-Powered Extraction** — Use Cortex AI functions (AI_EXTRACT, AI_CLASSIFY) to transform unstructured claim notes and documents into queryable structured data at scale.
 
-**3. Intelligent Search** — Build a Cortex Search service over safety documents and inspection reports for hybrid semantic + keyword search.
+**3. Natural Language Analytics** — Create a Semantic View over claims tables using the Autopilot and query them with plain English via Cortex Analyst.
 
-**4. AI Agents** — Create a Cortex Agent that orchestrates structured data queries AND document search through a single conversational interface.
+**4. AI Agents** — Create a Cortex Agent that provides self-service claims analytics through a conversational interface.
 
-**5. Collaborative AI** — Use CoWork to collaboratively analyze port data with AI assistance.
+**5. Collaborative Analysis** — Use CoWork to explore claims data collaboratively with AI assistance.
 
-**6. Operations Dashboard** — Deploy a Streamlit app with live KPIs, charts, and an AI chat interface.
+**6. Operations Dashboard** — Deploy a Streamlit app with live KPIs, charts, and AI-powered insights.
 """)
 
 st.space("small")
@@ -75,4 +74,4 @@ with st.container(border=True):
 """)
 
 st.space("medium")
-st.caption("Built for the July 9, 2026 workshop  :material/location_on:  Snowflake Toronto Office — Lake of Bays boardroom")
+st.caption("Sun Life DentaQuest Workshop — July 20, 2026")

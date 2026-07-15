@@ -1,152 +1,153 @@
 import streamlit as st
-from components import render_session_header, render_prompt, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
+from components import render_session_header, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
 
-render_session_header(4, "Cortex Agents", "10:10 - 10:30 AM", "20 min", "Cortex Agent with Analyst + Search + custom tools")
+render_session_header(4, "Cortex Agents", "30 min", "Cortex Agent created via UI with semantic view tool")
 
 render_technologies_used([
-    {"name": "Cortex Agent (CREATE AGENT)", "description": "An orchestrating AI that plans tasks, selects tools (Analyst, Search, custom), executes them, reflects on results, and generates responses. Created as a first-class Snowflake object.", "icon": "smart_toy"},
-    {"name": "Tool Orchestration", "description": "The Agent automatically routes questions to the right tool: Cortex Analyst for structured data, Cortex Search for unstructured documents, custom UDFs for business logic.", "icon": "route"},
-    {"name": "Custom Tools (UDFs)", "description": "User-defined functions that extend Agent capabilities. The Agent can call any SQL UDF as a tool, enabling custom business logic and calculations.", "icon": "build"},
+    {"name": "Cortex Agent", "description": "An orchestrating AI that plans tasks, selects tools, executes them, reflects on results, and generates responses. Created as a first-class Snowflake object via the Snowsight UI.", "icon": "smart_toy"},
+    {"name": "Tool Integration", "description": "The Agent uses tools like Cortex Analyst (semantic views) to answer questions. It automatically routes questions to the appropriate tool based on the query.", "icon": "route"},
+    {"name": "Agent Instructions", "description": "Custom instructions that define the agent's role, behavior, domain expertise, and response style. Shapes how the agent interprets and answers questions.", "icon": "edit_note"},
 ])
 
+st.markdown("---")
 
-PROMPT_4_1 = """In PORT_YTO_AI.PORT_OPS, create a Cortex Agent called PORT_OPS_AGENT that port operations staff can use to ask questions about both structured data and unstructured documents.
+st.markdown("#### :material/smart_toy: Create a Cortex Agent")
 
-It should:
-- Use auto as the orchestration model
-- Have two tools: the PORT_OPERATIONS_VIEW semantic view (for structured data queries) and the port_knowledge_search Cortex Search service (for safety docs and inspection reports)
-- Include instructions that define it as the Port of Toronto Operations Assistant, guiding it to use the right tool for the question type — structured data tool for numbers/volumes/metrics, search tool for incidents/reports/documents
-- Mention key domain context in the instructions: Great Lakes port on Lake Ontario serving the Greater Toronto Area, key terminals (Terminal 51, Cherry Street, Port Lands, Outer Harbour, Commissioners Street), Seaway season Apr-Dec (winter closure Jan-Mar)
-- Include 3-4 sample questions that span both tools (e.g. TEU volumes, incident reports, CBSA inspections)
-
-Execute and show confirmation."""
-
-render_prompt("Prompt 4.1", "Create the Cortex Agent", PROMPT_4_1)
-
-render_explanation("What this prompt does", """
-Creates a **Cortex Agent** — an AI orchestrator that combines multiple data tools:
-
-**CREATE AGENT anatomy**:
-
-- **MODEL**: The LLM used for orchestration (planning, reflection, response generation). `auto` lets Snowflake select the best available model.
-
-- **TOOLS**: The capabilities the agent can use:
-  - **Cortex Search service** (`port_knowledge_search`): For searching unstructured documents
-  - **Semantic view** (`PORT_OPERATIONS_VIEW`): For generating SQL queries from natural language
-
-- **INSTRUCTIONS**: System prompt that shapes behavior, tone, and priorities:
-  - Role definition ("You are the Port of Toronto Operations Assistant")
-  - Tool routing guidance ("use structured data tool for numbers")
-  - Behavioral guidelines (cite sources, emphasize safety)
-  - Clear, concise responses with source citations
-
-- **SAMPLE_QUESTIONS**: Seed questions shown to users in the UI.
-
-**How the Agent orchestrates**:
-1. **Planning**: Receives user question, decides which tool(s) to use
-2. **Tool execution**: Calls Analyst (generates + runs SQL) or Search (retrieves documents)
-3. **Reflection**: Evaluates tool results — are they sufficient? Need another tool?
-4. **Response**: Synthesizes a natural language answer from tool outputs
+st.markdown("""
+In this session, you'll create a Cortex Agent using the Snowsight UI. The agent will use your semantic view from Session 3 as a tool, enabling conversational claims analytics.
 """)
 
+st.space("small")
 
-PROMPT_4_2 = """Test our PORT_OPS_AGENT by running queries through SNOWFLAKE.CORTEX.AGENT(). Run these four queries one at a time:
-
-1. Structured data query: "What are the busiest terminals by TEU count and which shipping lines dominate each terminal?"
-2. Unstructured search query: "Have there been any environmental incidents or pollution events at the port? What was done about them?"
-3. Mixed query (should use both tools): "Which terminals have had both the highest cargo volume AND the most safety incidents? Is there a correlation?"
-
-For each, show the full response including which tools the agent chose to use."""
-
-render_prompt("Prompt 4.2", "Test the Agent", PROMPT_4_2)
-
-render_explanation("What this prompt does", """
-Tests the Agent with three question types that exercise different tool routing:
-
-1. **Pure structured** — routes to Cortex Analyst, generates SQL with GROUP BY terminal and shipping line
-2. **Pure unstructured** — routes to Cortex Search, retrieves environmental incident documents
-3. **Mixed** — requires BOTH tools: Analyst for cargo volume, Search for safety incidents, then combines
-
-**What to look for**:
-- Which tools did the agent select for each question?
-- Did the mixed query correctly use both tools?
-
-**Agent vs. RAG**: The RAG pattern in Session 3 was a single retrieve-then-generate pipeline. The Agent is smarter — it can decide to use Search, then Analyst, then Search again based on the question. It splits complex questions into sub-tasks.
+st.markdown("##### Step 1: Open the Agent Builder")
+with st.container(border=True):
+    st.markdown("""
+1. In Snowsight, navigate to **AI & ML** in the left sidebar
+2. Click **Cortex Agents**
+3. Click **Create Agent** (or the **+** button)
 """)
 
+st.space("small")
 
-PROMPT_4_3 = """In PORT_YTO_AI.PORT_OPS, enhance our agent by adding a custom tool.
+st.markdown("##### Step 2: Configure the agent")
+with st.container(border=True):
+    st.markdown("""
+1. **Name**: `CLAIMS_ANALYST_AGENT`
+2. **Location**: `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS`
+3. **Model**: Select `auto` (lets Snowflake choose the best available model)
+""")
 
-1. Create a UDF that calculates estimated port congestion risk:
+st.space("small")
 
-CREATE OR REPLACE FUNCTION PORT_YTO_AI.PORT_OPS.CALCULATE_CONGESTION_RISK(
-    terminal_name VARCHAR,
-    teu_count NUMBER,
-    arrival_month NUMBER
-)
-RETURNS VARIANT
-LANGUAGE SQL
-AS
-$$
-    SELECT OBJECT_CONSTRUCT(
-        'terminal', terminal_name,
-        'teu_count', teu_count,
-        'risk_score',
-            CASE
-                WHEN arrival_month IN (7,8,9,10) AND teu_count > 1000 THEN 'HIGH'
-                WHEN arrival_month IN (7,8,9,10) OR teu_count > 1000 THEN 'MEDIUM'
-                ELSE 'LOW'
-            END,
-        'recommendation',
-            CASE
-                WHEN arrival_month IN (7,8,9,10) AND teu_count > 1000 THEN 'Pre-allocate additional berth slots and crane resources. Peak Seaway season.'
-                WHEN arrival_month IN (7,8,9,10) OR teu_count > 1000 THEN 'Monitor queue times and prepare standby resources'
-                ELSE 'Standard operations'
-            END
-    )
-$$;
+st.markdown("##### Step 3: Add the semantic view as a tool")
+with st.container(border=True):
+    st.markdown("""
+1. In the **Tools** section, click **Add Tool**
+2. Select **Semantic View** as the tool type
+3. Choose `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_ANALYTICS_VIEW`
+4. This gives the agent the ability to query your claims data via natural language
+""")
 
-2. Test the UDF with sample inputs.
+st.space("small")
 
-3. Recreate PORT_OPS_AGENT to include CALCULATE_CONGESTION_RISK as an additional tool alongside the existing Analyst and Search tools.
+st.markdown("##### Step 4: Write agent instructions")
+with st.container(border=True):
+    st.markdown("""
+In the **Instructions** field, paste the following:
 
-4. Test the enhanced agent with: "What is the congestion risk for a 2000 TEU shipment arriving at Terminal 51 in August?"
+```text
+You are a dental claims analysis assistant for DentaQuest. Your role is to help
+claims analysts, managers, and executives understand claim patterns, provider
+performance, member utilization, and identify potential areas of concern.
 
-Execute all SQL and show results."""
+When answering questions:
+- Use the semantic view tool for all data queries about claims, members, providers, and procedures
+- Provide specific numbers and percentages when available
+- Highlight any unusual patterns or outliers
+- When discussing financial data, format amounts as currency
+- If asked about trends, compare across time periods when data allows
+- Be concise but thorough — include context that helps with decision-making
 
-render_prompt("Prompt 4.3", "Agent with Custom Tool", PROMPT_4_3)
+Domain context:
+- CDT codes (D0xxx-D9xxx) are the standard dental procedure coding system
+- Plan types include PPO, HMO, DHMO, and Indemnity
+- Network status affects reimbursement rates (In-Network vs Out-of-Network)
+- Key metrics: approval rate, average days to adjudicate, denial rate by reason
+- Common concerns: high-cost outlier providers, unusual procedure patterns, slow adjudication
+```
+""")
 
-render_explanation("What this prompt does", """
-Extends the Agent with a **custom UDF tool**:
+st.space("small")
 
-**Custom tools** allow Agents to go beyond Search and Analyst:
-- Business calculations (congestion risk scoring)
-- External API calls (via external access integrations)
-- Data transformations (formatting, currency conversion)
-- Workflow triggers (creating tickets, sending notifications)
+st.markdown("##### Step 5: Add sample questions")
+with st.container(border=True):
+    st.markdown("""
+Add these sample questions to help users understand what the agent can do:
 
-**The UDF** implements a rule-based congestion risk calculator. Peak months for the Port of Toronto are July–October (before the Welland Canal/Seaway closes for winter in December).
+1. "What is our overall claim approval rate and how does it vary by plan type?"
+2. "Which providers have the highest average billed amount per claim?"
+3. "What are the most common denial reasons and their frequency?"
+4. "Show me the monthly trend in claim volume for 2025"
+""")
 
-**How the Agent uses custom tools**: When the user asks about congestion risk, the Agent:
-1. Recognizes this matches the CALCULATE_CONGESTION_RISK function
-2. Extracts parameters (terminal=Maisonneuve, TEU=2000, month=8)
-3. Calls the UDF with those parameters
-4. Incorporates the result into its response
+st.space("small")
 
-**This is the "agentic" pattern**: The Agent doesn't just retrieve data — it takes actions, calls functions, and orchestrates workflows.
+st.markdown("##### Step 6: Test the agent")
+with st.container(border=True):
+    st.markdown("""
+Use the built-in chat interface to test your agent with these queries:
+
+1. **Basic analytics**: "What is our total claims volume and approval rate?"
+2. **Provider analysis**: "Which providers are billing significantly above average for routine procedures?"
+3. **Trend analysis**: "How has our denial rate changed month over month?"
+4. **Cross-dimensional**: "Compare claim outcomes across plan types — which plans have the best approval rates?"
+5. **Actionable insight**: "What are the top 3 areas where we could reduce claim denials?"
+
+Observe how the agent routes each question to the semantic view, generates SQL, and synthesizes a conversational response.
+""")
+
+st.space("small")
+
+st.markdown("##### Step 7: Save and publish")
+with st.container(border=True):
+    st.markdown("""
+1. Review your agent configuration
+2. Click **Create** to save the agent
+3. The agent is now available for use in CoWork (Session 5) and via the API
+""")
+
+st.markdown("---")
+
+render_explanation("How the agent works", """
+**Cortex Agents** orchestrate multiple steps to answer questions:
+
+1. **Understanding**: The agent reads the user's question and determines intent
+2. **Planning**: It decides which tool(s) to use (in our case, the semantic view)
+3. **Execution**: It calls Cortex Analyst to generate and run SQL against the semantic view
+4. **Reflection**: It evaluates the results — are they sufficient? Need clarification?
+5. **Response**: It synthesizes a natural language answer from the query results
+
+**Agent vs. direct Cortex Analyst**:
+- Cortex Analyst generates SQL and returns rows
+- An Agent wraps Analyst with conversational context, instructions, and multi-turn memory
+
+**Extending agents**: In production, you could add more tools:
+- A **Cortex Search** service for searching unstructured documents
+- **Custom UDFs** for business calculations (fraud scoring, risk assessment)
+- **External APIs** via external access integrations
 """)
 
 
 render_key_concepts([
-    {"term": "Cortex Agent", "definition": "A first-class Snowflake object that orchestrates LLMs, Cortex Analyst, Cortex Search, and custom tools to answer complex questions. Supports planning, tool use, reflection, and multi-turn conversations."},
-    {"term": "Tool Routing", "definition": "The Agent's ability to select the appropriate tool for each question. Structured data -> Analyst, unstructured search -> Search, calculations -> custom UDFs. The LLM decides routing based on the question and tool descriptions."},
-    {"term": "Custom Tools", "definition": "SQL UDFs or stored procedures registered as Agent tools. The Agent calls them with extracted parameters. Enables custom business logic, external integrations, and workflow automation."},
-    {"term": "Multi-tool Orchestration", "definition": "When a question requires multiple tools (e.g., 'show me cargo volume AND safety incidents'), the Agent plans a sequence of tool calls, executes them, and synthesizes a combined answer."},
+    {"term": "Cortex Agent", "definition": "A first-class Snowflake object that orchestrates LLMs and tools to answer complex questions. Supports planning, tool use, reflection, and multi-turn conversations. Created via UI or CREATE AGENT SQL."},
+    {"term": "Agent Instructions", "definition": "A system prompt that defines the agent's role, behavior, domain expertise, and response style. Good instructions lead to more accurate, contextual responses."},
+    {"term": "Tool Routing", "definition": "The agent's ability to select the appropriate tool for each question. With a semantic view tool, it routes data questions to Cortex Analyst for SQL generation."},
+    {"term": "Sample Questions", "definition": "Seed questions displayed to users in the agent UI. Help users understand what the agent can do and provide starting points for exploration."},
 ])
 
 render_what_you_built([
-    "PORT_OPS_AGENT — Cortex Agent with Analyst + Search tools",
-    "Tested structured, unstructured, and mixed queries",
-    "CALCULATE_CONGESTION_RISK UDF as a custom tool",
-    "Enhanced agent with three tool types (Analyst + Search + custom)",
+    "CLAIMS_ANALYST_AGENT — Cortex Agent with semantic view tool",
+    "Custom instructions for dental claims analysis domain",
+    "Tested analytics, trends, and cross-dimensional queries",
+    "Agent ready for CoWork integration (Session 5)",
 ])

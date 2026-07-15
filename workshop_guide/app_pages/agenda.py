@@ -1,52 +1,52 @@
 import streamlit as st
 
-st.title("Workshop agenda")
+st.title("Workshop Agenda")
 
 AGENDA = [
-    ("8:30 - 8:40 AM", "Arrival & Coffee", None, None),
-    ("8:40 - 8:50 AM", "Welcome & Workshop Overview", None, None),
-    ("8:50 - 9:10 AM", "Session 1: Data Prep", "20 min", "1"),
-    ("9:10 - 9:35 AM", "Session 2: Cortex Analyst & Semantic Views", "25 min", "2"),
-    ("9:35 - 9:55 AM", "Session 3: Cortex Search", "20 min", "3"),
-    ("9:55 - 10:10 AM", ":orange-badge[BREAK]", None, None),
-    ("10:10 - 10:30 AM", "Session 4: Cortex Agents", "20 min", "4"),
-    ("10:30 - 10:45 AM", "Session 5: CoWork", "15 min", "5"),
-    ("10:45 - 11:00 AM", "Session 6: Streamlit", "15 min", "6"),
+    ("Introductions & Overview", "15 min", None),
+    ("Session 1: Data Prep", "30 min", "1"),
+    ("Session 2: AI SQL", "40 min", "2"),
+    ("Session 3: Cortex Analyst & Semantic Views", "35 min", "3"),
+    (":orange-badge[BREAK]", "15 min", None),
+    ("Session 4: Cortex Agents", "30 min", "4"),
+    ("Session 5: CoWork", "25 min", "5"),
+    ("Session 6: Streamlit", "30 min", "6"),
+    ("Summary & Next Steps", "15 min", None),
 ]
 
-for time, title, duration, session_num in AGENDA:
+for title, duration, session_num in AGENDA:
     if session_num:
-        col1, col2 = st.columns([1, 4])
-        col1.markdown(f"**{time}**")
-        col2.markdown(f":material/play_circle: **{title}** :gray-badge[{duration}]")
+        col1, col2 = st.columns([4, 1])
+        col1.markdown(f":material/play_circle: **{title}**")
+        col2.markdown(f":gray-badge[{duration}]")
     elif "BREAK" in title:
-        col1, col2 = st.columns([1, 4])
-        col1.markdown(f"**{time}**")
-        col2.markdown(f"{title}")
+        col1, col2 = st.columns([4, 1])
+        col1.markdown(f"{title}")
+        col2.markdown(f":gray-badge[{duration}]")
     else:
-        col1, col2 = st.columns([1, 4])
-        col1.markdown(f"**{time}**")
-        col2.markdown(f":gray[{title}]")
+        col1, col2 = st.columns([4, 1])
+        col1.markdown(f":gray[{title}]")
+        col2.markdown(f":gray-badge[{duration}]")
 
 st.space("medium")
 
-st.markdown("##### What you'll build by end of morning")
+st.markdown("##### What you'll build")
 st.markdown("""
 | Object Type | Count | Examples |
 |-------------|-------|---------|
-| **Tables** | 10 | Container manifests, invoices, rail schedules, incident logs |
-| **Cortex Search Services** | 1 | Port knowledge base search |
-| **Semantic Views** | 1 | PORT_OPERATIONS_VIEW with relationships, metrics, and AI instructions |
-| **Cortex Agents** | 1 | Port operations agent with Analyst + Search + custom tools |
-| **Streamlit Apps** | 1 | Operations dashboard with AI chat |
+| **Tables** | 6 | Members, claims, providers, procedures, claim notes, communications |
+| **AI Extractions** | 1 | EXTRACTED_CLAIM_INSIGHTS materialized table |
+| **Semantic Views** | 1 | Claims analytics semantic view (via Autopilot) |
+| **Cortex Agents** | 1 | Claims analysis agent with semantic view tool |
+| **Streamlit Apps** | 1 | Claims dashboard with KPIs and charts |
 """)
 
 st.space("small")
 
-st.markdown("##### Location")
+st.markdown("##### Total duration")
 with st.container(border=True):
     st.markdown("""
-:material/location_on: **Snowflake Toronto Office — Lake of Bays boardroom**
+:material/schedule: **~4 hours** (including 15-minute break between Block 1 and Block 2)
 
-July 9, 2026 — 8:30 AM to 11:00 AM
+Sun Life DentaQuest Workshop — July 20, 2026
 """)

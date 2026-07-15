@@ -1,11 +1,11 @@
 import streamlit as st
 from components import render_session_header, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
 
-render_session_header(5, "CoWork", "10:30 - 10:45 AM", "15 min", "Collaborative AI analysis with CoWork")
+render_session_header(5, "CoWork", "25 min", "Collaborative AI analysis with CoWork")
 
 render_technologies_used([
     {"name": "Snowflake CoWork", "description": "An AI-powered collaborative workspace inside Snowsight where you can analyze data, generate insights, and share findings with your team — all through natural language conversation.", "icon": "group"},
-    {"name": "Data Analysis", "description": "CoWork can query your Snowflake data, generate visualizations, and provide insights without writing SQL. It understands your semantic views and table structures.", "icon": "analytics"},
+    {"name": "Agent Integration", "description": "CoWork leverages your Cortex Agents to answer questions. The CLAIMS_ANALYST_AGENT from Session 4 powers the data analysis capabilities.", "icon": "smart_toy"},
     {"name": "Sharing & Collaboration", "description": "CoWork sessions can be shared with team members, creating a collaborative space for data exploration and decision-making.", "icon": "share"},
 ])
 
@@ -16,7 +16,7 @@ with st.container(border=True):
     st.markdown("""
 In Snowsight, click **CoWork** in the left navigation panel. Start a new conversation.
 
-CoWork provides a chat-based interface that can query your Snowflake data, create charts, and generate insights — no SQL required. It discovers your tables in `PORT_YTO_AI.PORT_OPS` automatically.
+CoWork provides a chat-based interface that leverages your Cortex Agent to query data, create visualizations, and generate insights. It uses the `CLAIMS_ANALYST_AGENT` you created in Session 4.
 
 Paste each question below into CoWork one at a time and observe how it generates queries and visualizations.
 """)
@@ -27,13 +27,12 @@ st.markdown("#### :material/chat: Questions to ask CoWork")
 st.caption("Copy and paste each question into CoWork individually. They build on each other in sequence.")
 
 questions = [
-    ("1. Operations Overview", "Show me an overview of the Port of Toronto operations — how many containers have we processed, what's our busiest terminal, and what's the average truck wait time?"),
-    ("2. Seasonal Patterns", "Create a visualization showing TEU volume by terminal and month. Are there seasonal patterns?"),
-    ("3. Safety Concerns", "What are the top safety concerns at the port based on incident data? Show me a breakdown by category and severity."),
-    ("4. Crane Efficiency", "Compare the crane utilization rates across terminals. Which terminals are operating most efficiently?"),
-    ("5. Correlation Analysis", "Based on the incident data and crane utilization patterns, are there any terminals that seem to have both high utilization AND more safety incidents? Could overworked equipment be a factor?"),
-    ("6. Executive Summary", "Generate a summary report of port operations health that I could share with the port authority board. Include key metrics, trends, and areas of concern."),
-    ("7. Recommendations", "What would you recommend as the top 3 operational improvements based on all the data you can see?"),
+    ("1. Portfolio Overview", "Show me an overview of our dental claims portfolio — total claims processed, approval rate, average payout amount, and total dollars paid."),
+    ("2. Provider Outliers", "Which providers are billing significantly above average for common procedures like cleanings (D1110) and fillings (D2330, D2391)? Show me the outliers."),
+    ("3. Denial Patterns", "What are the most common denial reasons and which procedure categories have the highest denial rates? Are there patterns we should investigate?"),
+    ("4. Plan Comparison", "Compare claim outcomes across our plan types (PPO, HMO, DHMO, Indemnity). Which plans have the best approval rates and fastest adjudication?"),
+    ("5. Geographic Analysis", "Break down our claims by member state. Which states have the highest average claim amounts and denial rates?"),
+    ("6. Executive Summary", "Generate an executive summary of our dental claims operations that I could share with leadership. Include key metrics, trends, and the top 3 areas of concern."),
 ]
 
 for title, question in questions:
@@ -44,23 +43,24 @@ for title, question in questions:
 st.space("small")
 
 render_explanation("How CoWork works", """
-**CoWork** is Snowflake's collaborative AI workspace. Unlike Cortex Code (which executes prompts as SQL/Python), CoWork is designed for **interactive data exploration and team collaboration**.
+**CoWork** is Snowflake's collaborative AI workspace. It uses your Cortex Agents to provide interactive data exploration.
 
-**How CoWork differs from Cortex Code**:
+**How CoWork differs from other tools**:
 - **Cortex Code**: Developer tool — executes SQL, creates objects, builds infrastructure
 - **CoWork**: Analyst tool — explores data, generates visualizations, shares insights
+- **Cortex Agent (direct)**: API/programmatic access to the agent
 
 **What CoWork does with these questions**:
-1. Queries your tables automatically (it discovers PORT_YTO_AI.PORT_OPS tables)
-2. Generates appropriate SQL behind the scenes
-3. Creates visualizations (charts, tables) inline
-4. Provides natural language explanations of the results
+1. Routes questions to your CLAIMS_ANALYST_AGENT
+2. The agent generates SQL via the semantic view
+3. Results are displayed with automatic visualizations
+4. Supports follow-up questions in context
 
 **Key capabilities**:
-- Understands your semantic views and table relationships
 - Creates charts and visualizations automatically
-- Supports follow-up questions in context
+- Maintains conversation context for follow-up questions
 - Can be shared with team members for collaborative analysis
+- Generates summaries and recommendations
 
 **When to use CoWork vs. Cortex Code vs. Cortex Agent**:
 | Tool | Best for |
@@ -74,12 +74,12 @@ render_explanation("How CoWork works", """
 render_key_concepts([
     {"term": "CoWork", "definition": "Snowflake's collaborative AI workspace for data exploration. Provides a conversational interface that queries data, creates visualizations, and generates insights. Designed for business analysts and team collaboration."},
     {"term": "Collaborative Intelligence", "definition": "The pattern where AI assists a team in making decisions together. CoWork sessions can be shared, allowing multiple people to ask questions, build on each other's analysis, and reach conclusions collectively."},
-    {"term": "Context Maintenance", "definition": "CoWork maintains conversation history so follow-up questions build on previous analysis. Ask 'Show me TEU by terminal' then 'Now filter to just peak months' — it remembers the context."},
+    {"term": "Context Maintenance", "definition": "CoWork maintains conversation history so follow-up questions build on previous analysis. Ask 'Show me claims by status' then 'Now filter to just denied' — it remembers the context."},
 ])
 
 render_what_you_built([
-    "Explored port operations data through conversational AI",
+    "Explored claims data through conversational AI in CoWork",
     "Generated visualizations and cross-table analysis",
-    "Created an executive summary of port operations health",
-    "Demonstrated the CoWork collaborative analysis pattern",
+    "Identified provider outliers and denial patterns",
+    "Created an executive summary of claims operations health",
 ])

@@ -1,0 +1,18 @@
+CLINICAL NARRATIVE - APPEAL DOCUMENTATION
+Patient: Mark Hernandez
+DOB: 1991-02-06
+Tooth: #19
+Procedure: D7510 - Incision and drainage of abscess - intraoral soft tissue
+
+Clinical Findings:
+Patient presented on 2025-03-27 with chief complaint of sensitivity to hot and cold. Clinical examination revealed severe bone loss around the tooth. Radiographic evaluation confirmed radiolucent area at apex measuring 4mm.
+
+Treatment Rationale:
+The recommended procedure (Incision and drainage of abscess - intraoral soft tissue) is medically necessary because periodontal disease has progressed to an advanced stage. Alternative treatments considered include pulp capping, however these were deemed inadequate due to insufficient remaining tooth structure.
+
+Prognosis:
+With appropriate treatment, prognosis is favorable. Without treatment, patient risks abscess formation.
+
+Submitted by: Dr. Donald Johnson, Periodontics
+NPI: 1305939035
+Date: 2025-04-08

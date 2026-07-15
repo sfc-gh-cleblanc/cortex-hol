@@ -1,0 +1,16 @@
+EXPLANATION OF BENEFITS
+Plan: DentaQuest HMO
+Member: Charles Davis (ID: MBR-00121)
+Provider: Dr. Robert Wilson
+Date of Service: 2026-01-16
+Procedure: D9310 - Consultation - diagnostic service by specialist
+
+Billed Amount: $160.86
+Allowed Amount: $130.20
+Plan Pays: $104.16
+Member Responsibility: $56.70
+
+Status: Approved
+
+This is not a bill. Please retain for your records.
+If you have questions about this EOB, contact DentaQuest Member Services at 1-800-555-0199.

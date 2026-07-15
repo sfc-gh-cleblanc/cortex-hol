@@ -1,0 +1,17 @@
+EXPLANATION OF BENEFITS
+Plan: DentaQuest PPO
+Member: Sandra Robinson (ID: MBR-00095)
+Provider: Dr. Donald Anderson
+Date of Service: 2024-05-27
+Procedure: D7230 - Removal of impacted tooth - partially bony
+
+Billed Amount: $406.86
+Allowed Amount: $263.08
+Plan Pays: $210.46
+Member Responsibility: $196.40
+
+Status: Denied
+Denial Reason: Non-covered dependent
+
+This is not a bill. Please retain for your records.
+If you have questions about this EOB, contact DentaQuest Member Services at 1-800-555-0199.

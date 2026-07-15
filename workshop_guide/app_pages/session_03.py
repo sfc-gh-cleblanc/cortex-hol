@@ -1,189 +1,123 @@
 import streamlit as st
 from components import render_session_header, render_prompt, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
 
-render_session_header(3, "Cortex Search", "9:35 - 9:55 AM", "20 min", "Knowledge base, Cortex Search service, and RAG query pattern")
+render_session_header(3, "Cortex Analyst & Semantic Views", "35 min", "Semantic view created via Autopilot, tested with natural language queries")
 
 render_technologies_used([
-    {"name": "Cortex Search Service", "description": "A managed hybrid search engine combining vector (semantic) and keyword search with automatic reranking. Created with a single SQL statement; handles embedding, indexing, and serving automatically.", "icon": "search"},
-    {"name": "RAG (Retrieval Augmented Generation)", "description": "A pattern that retrieves relevant documents first, then passes them as context to an LLM for grounded answer generation. Reduces hallucination by anchoring responses in actual data.", "icon": "hub"},
-    {"name": "SEARCH_PREVIEW", "description": "SQL function to query a Cortex Search Service. Supports text queries, column selection, filtering, and result limits. Returns JSON with ranked results.", "icon": "preview"},
+    {"name": "Semantic View Autopilot", "description": "A UI-guided tool in Snowsight that automatically generates a semantic view from your tables — detecting relationships, creating dimensions, facts, metrics, and synonyms.", "icon": "auto_awesome"},
+    {"name": "Cortex Analyst", "description": "Snowflake's text-to-SQL engine that converts natural language questions into SQL queries. Uses a semantic view to understand your data's business meaning, relationships, and metrics.", "icon": "chat"},
+    {"name": "Semantic View", "description": "A first-class Snowflake object that describes your data in business terms: tables, relationships, facts, dimensions, metrics, and synonyms. The bridge between natural language and SQL.", "icon": "description"},
 ])
 
+st.markdown("---")
 
-PROMPT_3_1 = """In PORT_YTO_AI.PORT_OPS:
+st.markdown("#### :material/auto_awesome: Create a Semantic View with Autopilot")
 
-1. First, create a unified text table for search called PORT_KNOWLEDGE_BASE that combines:
-   - PORT_INCIDENT_LOGS: incident_id as doc_id, 'incident_log' as doc_type, description_text || ' Resolution: ' || resolution_text as content, category as metadata_category, severity as metadata_priority, incident_date as doc_date
-   - MARINE_SAFETY_REPORTS: report_id as doc_id, 'safety_report' as doc_type, report_text || ' Recommended: ' || recommended_actions as content, report_type as metadata_category, status as metadata_priority, report_date as doc_date
-   - CBSA_INSPECTION_REPORTS: report_id as doc_id, 'inspection_report' as doc_type, findings_text as content, inspection_type as metadata_category, outcome as metadata_priority, inspection_date as doc_date
-
-2. Then create a Cortex Search Service:
-   CREATE OR REPLACE CORTEX SEARCH SERVICE port_knowledge_search
-     ON content
-     ATTRIBUTES metadata_category, metadata_priority, doc_type
-     WAREHOUSE = PORT_YTO_WH
-     TARGET_LAG = '1 hour'
-     EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-     AS (
-       SELECT doc_id, doc_type, content, metadata_category, metadata_priority, doc_date
-       FROM PORT_KNOWLEDGE_BASE
-     );
-
-Execute all SQL. Then verify the service is created by running SHOW CORTEX SEARCH SERVICES."""
-
-render_prompt("Prompt 3.1", "Create Cortex Search Service", PROMPT_3_1)
-
-render_explanation("What this prompt does", """
-Two major steps: building a unified knowledge base and creating a search service.
-
-**Step 1 — PORT_KNOWLEDGE_BASE**: A UNION ALL table combining three document sources into a common schema:
-- `doc_type` enables filtering by source (incidents vs. safety vs. inspections)
-- `metadata_category` and `metadata_priority` become filter attributes
-- Content is concatenated (description + resolution) for full context
-
-**Step 2 — CREATE CORTEX SEARCH SERVICE**: This single SQL statement:
-
-1. **Embeds** every row's `content` column using `snowflake-arctic-embed-l-v2.0`
-2. **Indexes** both vector (semantic) and keyword (lexical) search
-3. **Deploys** a low-latency serving endpoint
-4. **Auto-refreshes** when source data changes (within TARGET_LAG)
-
-**How hybrid search works**:
-1. Query text is embedded into the same vector space
-2. Vector similarity finds semantically similar documents
-3. Keyword search finds lexically matching documents
-4. A reranker combines and re-scores results
+st.markdown("""
+In this session, you'll use the **Semantic View Autopilot** to create a semantic view over your claims data — no SQL required. The Autopilot analyzes your tables and generates a complete semantic view with relationships, metrics, and dimensions.
 """)
 
+st.space("small")
 
-PROMPT_3_2 = """In PORT_YTO_AI.PORT_OPS, query our port_knowledge_search service using SEARCH_PREVIEW with these searches:
-
-1. Search: "equipment failure crane" - show top 3 results
-2. Search: "oil spill environmental pollution" - show top 3 results
-3. Search: "customs cargo discrepancy" filtered to doc_type = 'inspection_report' - show top 3 results
-4. Search: "winter storm ice delay" - show top 3 results
-
-Use this pattern for each:
-SELECT PARSE_JSON(
-  SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-    'PORT_YTO_AI.PORT_OPS.port_knowledge_search',
-    '{
-      "query": "<search_query>",
-      "columns": ["doc_id", "doc_type", "content", "metadata_category"],
-      "limit": 3
-    }'
-  )
-)['results'] as results;
-
-Execute all 4 searches and show results."""
-
-render_prompt("Prompt 3.2", "Query the Search Service", PROMPT_3_2)
-
-render_explanation("What this prompt does", """
-Four search queries demonstrating different capabilities:
-
-1. **"equipment failure crane"** — Tests keyword + semantic overlap. Should find crane malfunction incidents even if they don't use the exact word "failure."
-
-2. **"oil spill environmental pollution"** — Tests semantic search. Should find pollution incidents that describe "sheen," "contamination," or "discharge" without using "spill."
-
-3. **"customs cargo discrepancy" with filter** — Tests **attribute filtering**:
-```json
-{
-  "query": "customs cargo discrepancy",
-  "columns": ["doc_id", "doc_type", "content"],
-  "filter": {"@eq": {"doc_type": "inspection_report"}},
-  "limit": 3
-}
-```
-
-4. **"winter storm ice delay"** — Tests seasonal/weather concept matching across incident logs and safety reports.
-
-**Why hybrid search matters**: Pure keyword search misses synonyms ("spill" vs "discharge"). Pure vector search can return semantically similar but factually irrelevant results. Cortex Search combines both with reranking.
+st.markdown("##### Step 1: Open the Semantic View Autopilot")
+with st.container(border=True):
+    st.markdown("""
+1. In Snowsight, navigate to **AI & ML** in the left sidebar
+2. Click **Cortex Analyst**
+3. Click **Create Semantic View** (or the **+** button)
+4. Select **Autopilot** as the creation method
 """)
 
+st.space("small")
 
-PROMPT_3_3 = """In PORT_YTO_AI.PORT_OPS, implement a RAG pattern that:
+st.markdown("##### Step 2: Select your tables")
+with st.container(border=True):
+    st.markdown("""
+1. Set the database to **DENTAL_CLAIMS_AI** and schema to **CLAIMS_ANALYTICS**
+2. Select these tables:
+   - `MEMBERS`
+   - `CLAIMS`
+   - `PROVIDERS`
+   - `DENTAL_PROCEDURES`
+   - `EXTRACTED_CLAIM_INSIGHTS` (from Session 2)
+3. Click **Generate** to let the Autopilot analyze your data
+""")
 
-1. Takes a user question: "What are the most common safety incidents at Port of Toronto terminals and what preventive measures have been effective?"
+st.space("small")
 
-2. First retrieves the top 5 most relevant documents from port_knowledge_search using SEARCH_PREVIEW
+st.markdown("##### Step 3: Review the generated semantic view")
+with st.container(border=True):
+    st.markdown("""
+The Autopilot will generate:
 
-3. Then passes the retrieved context + question to SNOWFLAKE.CORTEX.COMPLETE() to generate a grounded answer:
+- **Relationships** — foreign key joins between tables (e.g., CLAIMS.MEMBER_ID -> MEMBERS.MEMBER_ID)
+- **Dimensions** — categorical columns for grouping/filtering (plan_type, status, state, specialty)
+- **Facts** — numeric columns for aggregation (billed_amount, paid_amount, allowed_amount)
+- **Metrics** — pre-defined aggregations (total billed, average paid, claim count)
+- **Synonyms** — alternative names users might use (e.g., "dentist" for provider, "payout" for paid_amount)
 
-WITH search_results AS (
-    SELECT PARSE_JSON(
-        SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-            'PORT_YTO_AI.PORT_OPS.port_knowledge_search',
-            '{
-                "query": "common safety incidents terminals preventive measures",
-                "columns": ["doc_id", "doc_type", "content", "metadata_category"],
-                "limit": 5
-            }'
-        )
-    )['results'] AS results
-),
-context AS (
-    SELECT LISTAGG(r.value:content::STRING, '\\n\\n---\\n\\n') AS combined_context
-    FROM search_results, LATERAL FLATTEN(input => results) r
-)
-SELECT SNOWFLAKE.CORTEX.COMPLETE(
-    'claude-sonnet-4-6',
-    'You are a port safety expert at the Port of Toronto. Based ONLY on the following source documents, answer the user question. Cite specific incidents by their doc_id when referencing findings. If the documents do not contain enough information, say so.
+**Review and accept** the generated view. You can make adjustments if needed, but the Autopilot typically produces a good starting point.
+""")
 
-SOURCE DOCUMENTS:
-' || combined_context || '
+st.space("small")
 
-USER QUESTION: What are the most common safety incidents at Port of Toronto terminals and what preventive measures have been effective?
+st.markdown("##### Step 4: Save the semantic view")
+with st.container(border=True):
+    st.markdown("""
+1. Give the semantic view a name (suggested: `CLAIMS_ANALYTICS_VIEW`)
+2. Save it to `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS`
+3. The view is now available for Cortex Analyst queries
+""")
 
-Provide a structured answer with: 1) Common incident types, 2) Root causes, 3) Effective preventive measures, 4) Recommendations.'
-) AS rag_response
-FROM context;
+st.markdown("---")
 
-Execute and show the RAG response."""
+st.markdown("#### :material/chat: Test with Natural Language Queries")
 
-render_prompt("Prompt 3.3", "RAG Pattern: Search + Generate", PROMPT_3_3)
+PROMPT_3_1 = """Ask Cortex Analyst these questions using DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_ANALYTICS_VIEW:
 
-render_explanation("What this prompt does", """
-Implements the full **RAG (Retrieval Augmented Generation)** pattern in a single SQL query:
+1. "What are the top 5 procedures by total billed amount?"
+2. "Which providers have the highest claim denial rate?"
+3. "Show me monthly claim volume trends by plan type for 2025"
+4. "What is the average time from date of service to adjudication for approved vs denied claims?"
+5. "What are the most common procedures for members in Massachusetts?"
 
-**Step 1 — Retrieve**: SEARCH_PREVIEW finds the 5 most relevant documents.
+Show the generated SQL and results for each."""
 
-**Step 2 — Augment**: LATERAL FLATTEN + LISTAGG combines retrieved documents into a single context string.
+render_prompt("Prompt 3.1", "Test with Natural Language Queries", PROMPT_3_1)
 
-**Step 3 — Generate**: CORTEX.COMPLETE() receives context + question and generates a grounded answer.
+st.info("""
+:material/lightbulb: **You can also test these in the Cortex Analyst UI!**
 
-**RAG architecture**:
-```
-User Question
-     |
-     v
-[Cortex Search] --> Top 5 documents
-     |
-     v
-[Context Assembly] --> "SOURCE DOCUMENTS: doc1... doc2..."
-     |
-     v
-[LLM (COMPLETE)] --> Grounded answer with citations
-```
+In Snowsight, navigate to **AI & ML > Cortex Analyst** in the left sidebar. Select your `CLAIMS_ANALYTICS_VIEW` semantic view, and you'll see a playground where you can type natural language questions and see the generated SQL and results interactively.
+""")
 
-**Why RAG works better than raw LLM**:
-- **Reduces hallucination**: LLM answers "ONLY" from provided documents
-- **Provides citations**: "Cite specific incidents by doc_id" enables traceability
-- **Fresh data**: Search service reflects latest data; LLM knowledge is static
-- **Domain-specific**: Your enterprise data isn't in the LLM's training set
+render_explanation("What these queries test", """
+Each query exercises different capabilities of the semantic view:
+
+1. **"Top 5 procedures by billed amount"** — Tests joining CLAIMS to DENTAL_PROCEDURES and aggregating billed_amount with a GROUP BY and ORDER BY.
+
+2. **"Providers with highest denial rate"** — Tests a calculated metric (COUNT of denied / total COUNT) grouped by provider, requiring a JOIN to PROVIDERS.
+
+3. **"Monthly claim volume by plan type"** — Tests time-series aggregation with DATE_TRUNC, GROUP BY on a dimension from MEMBERS (plan_type), and a JOIN between CLAIMS and MEMBERS.
+
+4. **"Avg time to adjudication"** — Tests DATEDIFF between date_of_service and adjudication_date, grouped by status dimension.
+
+5. **"Common procedures in Massachusetts"** — Tests filtering on a dimension (state) with a JOIN path through CLAIMS to MEMBERS.
+
+**What to observe**: Look at the generated SQL — does it correctly identify which tables to join, which metrics to use, and how to filter? This demonstrates the power of the semantic layer.
 """)
 
 
 render_key_concepts([
-    {"term": "Cortex Search Service", "definition": "A managed hybrid search engine created with SQL. Handles embedding, indexing (vector + keyword), reranking, and auto-refresh. Think of it as Elasticsearch-as-a-SQL-statement."},
-    {"term": "RAG (Retrieval Augmented Generation)", "definition": "An AI pattern: (1) retrieve relevant documents from a knowledge base, (2) include them as context in an LLM prompt, (3) generate an answer grounded in the retrieved data. The standard pattern for enterprise AI chatbots."},
-    {"term": "Hybrid Search", "definition": "Combining vector search (semantic similarity) with keyword search (exact/fuzzy text matching). Better than either alone because vector search catches synonyms while keyword search catches specific terms."},
-    {"term": "LATERAL FLATTEN + LISTAGG", "definition": "LATERAL FLATTEN expands a JSON array into rows. LISTAGG concatenates row values into a single string. Together, they convert search result arrays into a context string for LLM prompts."},
+    {"term": "Semantic View Autopilot", "definition": "A UI tool that automatically generates a semantic view by analyzing table structures, detecting foreign key relationships, inferring appropriate dimensions/facts/metrics, and adding synonyms. Significantly reduces the time to create a working semantic view."},
+    {"term": "Cortex Analyst", "definition": "Snowflake's text-to-SQL engine. Takes natural language questions and generates SQL queries using a semantic view for context. Supports aggregations, joins, filtering, time-series analysis, and diverse query types."},
+    {"term": "Fact vs Dimension vs Metric", "definition": "Facts are raw numeric columns (billed_amount). Dimensions are categorical/temporal columns for grouping and filtering (plan_type, state). Metrics are pre-defined aggregations over facts (SUM(billed_amount), AVG(paid_amount))."},
+    {"term": "Synonyms", "definition": "Alternative names for dimensions and facts that help Cortex Analyst understand user intent. For example, 'dentist' as a synonym for provider_name, or 'payout' for paid_amount."},
 ])
 
 render_what_you_built([
-    "PORT_KNOWLEDGE_BASE — unified document table from 3 sources (85 documents)",
-    "port_knowledge_search — Cortex Search service with hybrid search",
-    "4 search queries demonstrating keyword, semantic, and filtered search",
-    "Full RAG pipeline: retrieve + augment + generate in a single SQL query",
+    "CLAIMS_ANALYTICS_VIEW semantic view (via Autopilot)",
+    "Auto-detected relationships between 5 tables",
+    "Natural language queries tested across multiple patterns",
+    "Validated text-to-SQL accuracy for claims analytics",
 ])

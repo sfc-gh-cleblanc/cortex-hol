@@ -1,6 +1,0 @@
-terminal_id,terminal_name,terminal_code,latitude,longitude,max_teu_capacity,num_berths,num_cranes,operator
-T001,Terminal 51,T51,43.635,-79.365,250000,3,6,PortsToronto
-T002,Cherry Street Terminal,CHRY,43.642,-79.354,180000,2,4,PortsToronto
-T003,Port Lands Terminal,PLND,43.638,-79.34,320000,4,7,Toronto Port Authority
-T004,Outer Harbour Terminal,OHBR,43.628,-79.33,200000,2,4,Great Lakes Shipping Co
-T005,Commissioners Street Wharf,CMSW,43.645,-79.348,150000,2,3,PortsToronto

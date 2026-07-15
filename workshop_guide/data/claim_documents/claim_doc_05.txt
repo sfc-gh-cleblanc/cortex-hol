@@ -1,0 +1,17 @@
+EXPLANATION OF BENEFITS
+Plan: DentaQuest HMO
+Member: Donna White (ID: MBR-00129)
+Provider: Dr. John Thomas
+Date of Service: 2025-06-23
+Procedure: D5130 - Immediate denture - maxillary
+
+Billed Amount: $1714.98
+Allowed Amount: $1219.46
+Plan Pays: $975.57
+Member Responsibility: $739.41
+
+Status: Denied
+Denial Reason: Pre-authorization not obtained
+
+This is not a bill. Please retain for your records.
+If you have questions about this EOB, contact DentaQuest Member Services at 1-800-555-0199.

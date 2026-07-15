@@ -58,13 +58,14 @@ Use CREATE TABLE with INFER_SCHEMA from a stage and then COPY INTO them. The key
 Execute all SQL."""
 
 st.markdown("""
-**Before running the prompt below, download the CSV files and upload them to the `DATA` stage:**
+**Before running the prompt below, download the workshop data files and upload them to the `DATA` stage:**
 
-1. **Download** the workshop data files from GitHub:
-   **[Download Workshop Data](https://github.com/sfc-gh-cleblanc/cortex-hol/tree/main/workshop_guide/data)**
-   — download `members.csv`, `claims.csv`, `providers.csv`, `dental_procedures.csv`, `claim_notes.csv`, `member_communications.csv`
-2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > DATA** and upload all 6 CSV files.
-3. Then copy the prompt below into Cortex Code and execute.
+1. **Download** the workshop repository as a ZIP file:
+   **[Download ZIP](https://github.com/sfc-gh-cleblanc/cortex-hol/archive/refs/heads/main.zip)**
+2. **Unzip** the downloaded file. The required CSV data files are located in the `workshop_guide/data/` folder:
+   `members.csv`, `claims.csv`, `providers.csv`, `dental_procedures.csv`, `claim_notes.csv`, `member_communications.csv`
+3. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > DATA** and upload all 6 CSV files from that folder.
+4. Then copy the prompt below into Cortex Code and execute.
 """)
 
 render_prompt("Prompt 1.2", "Load and Create Tables from CSV", PROMPT_1_2)

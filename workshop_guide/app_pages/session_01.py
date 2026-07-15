@@ -58,11 +58,12 @@ Use CREATE TABLE with INFER_SCHEMA from a stage and then COPY INTO them. The key
 Execute all SQL."""
 
 st.markdown("""
-**Before running the prompt below, download the 6 CSV files and upload them to the `DATA` stage:**
+**Before running the prompt below, download the CSV files and upload them to the `DATA` stage:**
 
-1. Download all files from the workshop data folder:
-   `members.csv`, `claims.csv`, `providers.csv`, `dental_procedures.csv`, `claim_notes.csv`, `member_communications.csv`
-2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > DATA** and upload all 6 files.
+1. **Download** the workshop data files from GitHub:
+   **[Download Workshop Data](https://github.com/sfc-gh-cleblanc/cortex-hol/tree/main/workshop_guide/data)**
+   — download `members.csv`, `claims.csv`, `providers.csv`, `dental_procedures.csv`, `claim_notes.csv`, `member_communications.csv`
+2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > DATA** and upload all 6 CSV files.
 3. Then copy the prompt below into Cortex Code and execute.
 """)
 

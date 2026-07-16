@@ -155,6 +155,9 @@ LIST @DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS;
 
 You should see 15 files listed.
 """)
+
+
+render_key_concepts([
     {"term": "Internal Stage", "definition": "A named Snowflake stage that stores files within Snowflake's managed storage. Files are uploaded via Snowsight UI or PUT command and can be used with COPY INTO and INFER_SCHEMA."},
     {"term": "INFER_SCHEMA", "definition": "A Snowflake table function that automatically detects column names and types from files in a stage. Eliminates manual CREATE TABLE DDL for well-structured CSV/Parquet files."},
     {"term": "File Format", "definition": "A named object specifying how to parse files (CSV delimiters, headers, quoting, compression). Created once and reused across multiple COPY INTO operations."},

@@ -67,7 +67,7 @@ Use AI_CLASSIFY on the NOTE_TEXT from CLAIM_NOTES to categorize each note into o
 Show the top 10 results with the classification and confidence.
 
 PART B - Extract from staged documents:
-The claim_documents have already been uploaded to the CLAIM_DOCS stage (from Session 1). List the files in the stage to confirm, then use AI_EXTRACT with TO_FILE() on 3 of the staged documents (mix of PDF and TXT) to extract:
+Review the claim_documents uploaded to the CLAIM_DOCS stage. Use AI_EXTRACT with TO_FILE() to extract:
 - document_type: "What type of document is this? (EOB, clinical narrative, appeal letter)"
 - member_name: "What is the patient/member name?"
 - procedure_code: "What CDT procedure code is referenced?"

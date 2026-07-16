@@ -196,6 +196,7 @@ render_key_concepts([
     {"term": "AI_CLASSIFY", "definition": "A Cortex AI function that assigns text to one of N predefined categories. Returns the chosen label and a confidence score (0-1). No model selection needed."},
     {"term": "TO_FILE()", "definition": "A function that creates a file reference from a stage path. Used with AI_EXTRACT and AI_COMPLETE to process staged documents (PDFs, images, text files) rather than text columns."},
     {"term": "Batch Extraction", "definition": "The pattern of running AI functions across an entire table and materializing results into a new table. Converts unstructured data into queryable structured columns at scale."},
+    {"term": "AI_COMPLETE", "definition": "The general-purpose Cortex AI function for text generation. Pass a model name and prompt to generate free-form text — recommendations, summaries, analysis. Supports structured JSON output via response schema."},
 ])
 
 render_what_you_built([

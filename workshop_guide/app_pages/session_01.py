@@ -15,12 +15,13 @@ PROMPT_1_1 = """Create the following Snowflake objects for our Health Insurance 
 1. A database called DENTAL_CLAIMS_AI
 2. A schema called CLAIMS_ANALYTICS inside that database
 3. A stage called DATA in the schema CLAIMS_ANALYTICS with a directory table and server side encryption
-4. A warehouse called CLAIMS_WH (size MEDIUM, auto-suspend after 60 seconds, auto-resume enabled)
-5. Set the session context to use these objects
+4. A stage called CLAIM_DOCS in the schema CLAIMS_ANALYTICS with a directory table and server side encryption
+5. A warehouse called CLAIMS_WH (size MEDIUM, auto-suspend after 60 seconds, auto-resume enabled)
+6. Set the session context to use these objects
 
 Execute all SQL and confirm each object was created."""
 
-render_prompt("Prompt 1.1", "Create Database, Schema & Warehouse", PROMPT_1_1)
+render_prompt("Prompt 1.1", "Create Database, Schema, Stages & Warehouse", PROMPT_1_1)
 
 render_explanation("What this prompt does", """
 Creates the foundational Snowflake objects:
@@ -29,6 +30,9 @@ Creates the foundational Snowflake objects:
 CREATE DATABASE DENTAL_CLAIMS_AI;
 CREATE SCHEMA DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS;
 CREATE STAGE DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.DATA
+  DIRECTORY = (ENABLE = TRUE)
+  ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
+CREATE STAGE DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS
   DIRECTORY = (ENABLE = TRUE)
   ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
 CREATE WAREHOUSE CLAIMS_WH
@@ -124,36 +128,26 @@ You should see approximately **1,130 total rows** across 6 tables.
 """)
 
 
-PROMPT_1_4 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, create a stage called CLAIM_DOCS with a directory table and server-side encryption. Then list the files in the stage to confirm the upload."""
+PROMPT_1_4 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, list the files in the CLAIM_DOCS stage to confirm the upload was successful. Show the file names and sizes."""
 
 st.markdown("""
 **Upload the claim documents to the `CLAIM_DOCS` stage:**
 
 1. From the unzipped workshop repository, locate the `workshop_guide/data/claim_documents/` folder (contains 15 `.txt` files)
-2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages** 
-3. Copy the prompt below into Cortex Code to create the `CLAIM_DOCS` stage
-4. Then upload all 15 `.txt` files from `claim_documents/` to the newly created `CLAIM_DOCS` stage
+2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > CLAIM_DOCS** and upload all 15 `.txt` files
+3. Then copy the prompt below into Cortex Code to verify the upload
 """)
 
-render_prompt("Prompt 1.4", "Create CLAIM_DOCS Stage & Upload Documents", PROMPT_1_4)
+render_prompt("Prompt 1.4", "Upload & Verify Claim Documents", PROMPT_1_4)
 
 render_explanation("What this prompt does", """
-Creates a second internal stage specifically for unstructured claim documents:
+Verifies the claim document upload:
 
-```sql
-CREATE OR REPLACE STAGE DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS
-  DIRECTORY = (ENABLE = TRUE)
-  ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
-```
-
-After creating the stage, upload the 15 `.txt` files from `workshop_guide/data/claim_documents/` via the Snowsight UI. These files contain sample EOBs, clinical narratives, and appeal letters that we'll process with AI_EXTRACT in Session 2.
-
-To verify the upload:
 ```sql
 LIST @DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS;
 ```
 
-You should see 15 files listed.
+You should see 15 `.txt` files listed. These contain sample EOBs, clinical narratives, and appeal letters that we'll process with AI_EXTRACT in Session 2.
 """)
 
 

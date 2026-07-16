@@ -133,8 +133,8 @@ PROMPT_1_4 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, list the files in the CLAI
 st.markdown("""
 **Upload the claim documents to the `CLAIM_DOCS` stage:**
 
-1. From the unzipped workshop repository, locate the `workshop_guide/data/claim_documents/` folder (contains 15 `.txt` files)
-2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > CLAIM_DOCS** and upload all 15 `.txt` files
+1. From the unzipped workshop repository, locate the `workshop_guide/data/claim_documents/` folder (contains 8 PDF files and 7 TXT files)
+2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages > CLAIM_DOCS** and upload all 15 files
 3. Then copy the prompt below into Cortex Code to verify the upload
 """)
 
@@ -147,7 +147,7 @@ Verifies the claim document upload:
 LIST @DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS;
 ```
 
-You should see 15 `.txt` files listed. These contain sample EOBs, clinical narratives, and appeal letters that we'll process with AI_EXTRACT in Session 2.
+You should see 15 files listed (8 PDFs and 7 TXTs). These contain sample EOBs, clinical narratives, and appeal letters that we'll process with AI_EXTRACT in Session 2.
 """)
 
 

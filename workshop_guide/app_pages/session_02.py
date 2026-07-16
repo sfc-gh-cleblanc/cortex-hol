@@ -6,7 +6,7 @@ render_session_header(2, "AI SQL", "40 min", "Structured data extraction from un
 render_technologies_used([
     {"name": "AI_EXTRACT", "description": "Extracts structured fields from unstructured text or documents. Define a responseFormat schema and get clean JSON back. Works on text columns and staged files via TO_FILE().", "icon": "auto_fix_high"},
     {"name": "AI_CLASSIFY", "description": "Classifies text into predefined categories. Useful for triaging claims by type, urgency, or department without manual rules.", "icon": "category"},
-    {"name": "Batch Processing", "description": "Apply AI functions across entire tables to materialize extracted insights at scale. Creates queryable structured data from unstructured sources.", "icon": "view_timeline"},
+    {"name": "AI_COMPLETE", "description": "The general-purpose LLM function. Pass a model and prompt to generate free-form text — summaries, recommendations, analysis. Supports structured JSON output and multiple models.", "icon": "view_timeline"},
 ])
 
 

@@ -131,11 +131,11 @@ Create a materialized table called EXTRACTED_CLAIM_INSIGHTS that runs AI_EXTRACT
 
 3. Include the original note_id, claim_id, adjuster, and created_date alongside the extracted fields
 
-4. Create this as a table: CREATE TABLE EXTRACTED_CLAIM_INSIGHTS AS SELECT ...
+4. Also use AI_COMPLETE to generate an actionable recommendation column. For each row, use AI_COMPLETE with model 'claude-sonnet-4-6' to produce a one-sentence recommendation based on the clinical_finding and urgency. For example: "Schedule follow-up within 2 weeks for root canal evaluation" or "Approve routine cleaning - no action needed". Include this as a RECOMMENDATION column in the table.
 
-5. After creation, show the row count and a sample of 10 rows from the new table.
+5. Create this as a table: CREATE TABLE EXTRACTED_CLAIM_INSIGHTS AS SELECT ...
 
-6. Then, use AI_COMPLETE to add an actionable recommendation column. Run an ALTER TABLE to add a column called RECOMMENDATION, then UPDATE the table using AI_COMPLETE to generate a one-sentence recommendation for each claim based on the clinical_finding and urgency. For example: "Schedule follow-up within 2 weeks for root canal evaluation" or "Approve routine cleaning - no action needed". Use the model 'claude-sonnet-4-6' and limit the response to one concise sentence.
+6. After creation, show the row count and a sample of 10 rows from the new table.
 
 Execute all SQL."""
 
@@ -155,7 +155,14 @@ SELECT
     extracted:procedure_type::VARCHAR AS procedure_type,
     extracted:clinical_finding::VARCHAR AS clinical_finding,
     extracted:pre_auth_required::VARCHAR AS pre_auth_required,
-    extracted:urgency::VARCHAR AS urgency
+    extracted:urgency::VARCHAR AS urgency,
+    SNOWFLAKE.CORTEX.COMPLETE(
+        'claude-sonnet-4-6',
+        'Based on this dental claim with clinical finding: ' ||
+        extracted:clinical_finding::VARCHAR ||
+        ' and urgency level: ' || extracted:urgency::VARCHAR ||
+        ', provide a single concise sentence recommendation for the claims adjuster.'
+    ) AS recommendation
 FROM (
     SELECT
         *,
@@ -173,25 +180,12 @@ FROM (
 ) cn;
 ```
 
-**Why materialize?** Running AI_EXTRACT on every query would be slow and expensive. By materializing once, you:
+**AI_COMPLETE** is the general-purpose LLM function. Unlike AI_EXTRACT (structured extraction) and AI_CLASSIFY (categorization), AI_COMPLETE generates free-form text. Here it produces actionable next steps tailored to each claim's specific clinical context — all computed inline as part of the CTAS.
+
+**Why materialize?** Running AI_EXTRACT and AI_COMPLETE on every query would be slow and expensive. By materializing once, you:
 - Pay for extraction once, query the results for free
 - Enable downstream joins and analytics on extracted fields
 - Can refresh periodically as new notes arrive (or use Dynamic Tables for automation)
-
-**Step 6 — AI_COMPLETE for recommendations**:
-```sql
-ALTER TABLE EXTRACTED_CLAIM_INSIGHTS ADD COLUMN RECOMMENDATION VARCHAR;
-
-UPDATE EXTRACTED_CLAIM_INSIGHTS
-SET RECOMMENDATION = SNOWFLAKE.CORTEX.COMPLETE(
-    'claude-sonnet-4-6',
-    'Based on this dental claim with clinical finding: ' || clinical_finding ||
-    ' and urgency level: ' || urgency ||
-    ', provide a single concise sentence recommendation for the claims adjuster.'
-);
-```
-
-This demonstrates **AI_COMPLETE** — the general-purpose LLM function. Unlike AI_EXTRACT (structured extraction) and AI_CLASSIFY (categorization), AI_COMPLETE generates free-form text. Here it produces actionable next steps tailored to each claim's specific clinical context.
 
 **Production pattern**: In production, you would use a **Dynamic Table** or **Stream + Task** to incrementally process new claim notes as they arrive, rather than reprocessing the full table.
 """)

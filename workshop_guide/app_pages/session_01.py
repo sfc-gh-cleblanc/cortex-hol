@@ -124,7 +124,37 @@ You should see approximately **1,130 total rows** across 6 tables.
 """)
 
 
-render_key_concepts([
+PROMPT_1_4 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, create a stage called CLAIM_DOCS with a directory table and server-side encryption. Then list the files in the stage to confirm the upload."""
+
+st.markdown("""
+**Upload the claim documents to the `CLAIM_DOCS` stage:**
+
+1. From the unzipped workshop repository, locate the `workshop_guide/data/claim_documents/` folder (contains 15 `.txt` files)
+2. In Snowsight, navigate to **Data > Databases > DENTAL_CLAIMS_AI > CLAIMS_ANALYTICS > Stages** 
+3. Copy the prompt below into Cortex Code to create the `CLAIM_DOCS` stage
+4. Then upload all 15 `.txt` files from `claim_documents/` to the newly created `CLAIM_DOCS` stage
+""")
+
+render_prompt("Prompt 1.4", "Create CLAIM_DOCS Stage & Upload Documents", PROMPT_1_4)
+
+render_explanation("What this prompt does", """
+Creates a second internal stage specifically for unstructured claim documents:
+
+```sql
+CREATE OR REPLACE STAGE DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS
+  DIRECTORY = (ENABLE = TRUE)
+  ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
+```
+
+After creating the stage, upload the 15 `.txt` files from `workshop_guide/data/claim_documents/` via the Snowsight UI. These files contain sample EOBs, clinical narratives, and appeal letters that we'll process with AI_EXTRACT in Session 2.
+
+To verify the upload:
+```sql
+LIST @DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIM_DOCS;
+```
+
+You should see 15 files listed.
+""")
     {"term": "Internal Stage", "definition": "A named Snowflake stage that stores files within Snowflake's managed storage. Files are uploaded via Snowsight UI or PUT command and can be used with COPY INTO and INFER_SCHEMA."},
     {"term": "INFER_SCHEMA", "definition": "A Snowflake table function that automatically detects column names and types from files in a stage. Eliminates manual CREATE TABLE DDL for well-structured CSV/Parquet files."},
     {"term": "File Format", "definition": "A named object specifying how to parse files (CSV delimiters, headers, quoting, compression). Created once and reused across multiple COPY INTO operations."},
@@ -134,4 +164,5 @@ render_what_you_built([
     "DENTAL_CLAIMS_AI database and CLAIMS_ANALYTICS schema",
     "CLAIMS_WH warehouse (Medium, auto-suspend 60s)",
     "6 data tables loaded from CSV (~1,130 total rows)",
+    "CLAIM_DOCS stage with 15 uploaded claim documents",
 ])

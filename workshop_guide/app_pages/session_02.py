@@ -135,6 +135,8 @@ Create a materialized table called EXTRACTED_CLAIM_INSIGHTS that runs AI_EXTRACT
 
 5. After creation, show the row count and a sample of 10 rows from the new table.
 
+6. Then, use AI_COMPLETE to add an actionable recommendation column. Run an ALTER TABLE to add a column called RECOMMENDATION, then UPDATE the table using AI_COMPLETE to generate a one-sentence recommendation for each claim based on the clinical_finding and urgency. For example: "Schedule follow-up within 2 weeks for root canal evaluation" or "Approve routine cleaning - no action needed". Use the model 'claude-sonnet-4-6' and limit the response to one concise sentence.
+
 Execute all SQL."""
 
 render_prompt("Prompt 2.3", "Batch Extraction Pipeline", PROMPT_2_3)
@@ -176,6 +178,21 @@ FROM (
 - Enable downstream joins and analytics on extracted fields
 - Can refresh periodically as new notes arrive (or use Dynamic Tables for automation)
 
+**Step 6 — AI_COMPLETE for recommendations**:
+```sql
+ALTER TABLE EXTRACTED_CLAIM_INSIGHTS ADD COLUMN RECOMMENDATION VARCHAR;
+
+UPDATE EXTRACTED_CLAIM_INSIGHTS
+SET RECOMMENDATION = SNOWFLAKE.CORTEX.COMPLETE(
+    'claude-sonnet-4-6',
+    'Based on this dental claim with clinical finding: ' || clinical_finding ||
+    ' and urgency level: ' || urgency ||
+    ', provide a single concise sentence recommendation for the claims adjuster.'
+);
+```
+
+This demonstrates **AI_COMPLETE** — the general-purpose LLM function. Unlike AI_EXTRACT (structured extraction) and AI_CLASSIFY (categorization), AI_COMPLETE generates free-form text. Here it produces actionable next steps tailored to each claim's specific clinical context.
+
 **Production pattern**: In production, you would use a **Dynamic Table** or **Stream + Task** to incrementally process new claim notes as they arrive, rather than reprocessing the full table.
 """)
 
@@ -190,6 +207,7 @@ render_key_concepts([
 render_what_you_built([
     "AI_EXTRACT pipeline extracting 5 fields from clinical notes",
     "AI_CLASSIFY categorizing claims into 6 procedure types",
-    "Document extraction from staged .txt files using TO_FILE()",
+    "Document extraction from staged PDF/TXT files using TO_FILE()",
     "EXTRACTED_CLAIM_INSIGHTS materialized table (200 rows of structured extractions)",
+    "AI_COMPLETE generating per-claim recommendations from clinical context",
 ])

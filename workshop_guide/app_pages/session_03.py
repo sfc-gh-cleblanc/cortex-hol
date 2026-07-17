@@ -154,7 +154,7 @@ questions = [
     ("2. Denial rates", "Which providers have the highest claim denial rate?"),
     ("3. Volume trends", "Show me monthly claim volume trends by plan type for 2025"),
     ("4. Processing time", "What is the average time from date of service to adjudication for approved vs denied claims?"),
-    ("5. Geographic patterns", "What are the most common procedures for members in Massachusetts?"),
+    ("5. Network analysis", "What is the average paid amount for in-network vs out-of-network providers?"),
 ]
 
 for title, question in questions:

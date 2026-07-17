@@ -38,10 +38,14 @@ questions = [
     ("6. Executive Summary", "Generate an executive summary of our dental claims operations that I could share with leadership. Include key metrics, trends, and the top 3 areas of concern."),
 ]
 
-for title, question in questions:
+for i, (title, question) in enumerate(questions):
     with st.container(border=True):
         st.markdown(f"**{title}**")
         st.code(question, language="text", wrap_lines=True)
+    if i == 0:
+        st.info("""
+:material/save: **Save the chart as an artifact:** After CoWork responds with a visualization, click the **Save** icon on the chart to save it as an artifact. Artifacts persist in your CoWork session and can be referenced later, shared with teammates, or added to reports.
+""")
 
 st.write("")
 

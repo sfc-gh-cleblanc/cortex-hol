@@ -145,12 +145,11 @@ Click the **+ Add to Snowflake CoWork** button to make this agent accessible wit
 
 **Why this is required:** By default, a Cortex Agent is a Snowflake object that can be called via SQL or the REST API, but it is not automatically surfaced in CoWork. Adding it to CoWork registers the agent as an available assistant that users can interact with in the collaborative workspace — which is what we'll use in Session 5.
 
-**Other ways to access agents:**
+**Methods to access agents:**
 
 | Access method | Use case |
 |---------------|----------|
 | **CoWork** | Collaborative data exploration with team members (what we're enabling here) |
-| **Snowflake Intelligence** | Surface the agent as the default assistant in Snowsight for all users |
 | **REST API** | Embed the agent in external applications, chatbots, or custom UIs |
 | **SQL (CORTEX.AGENT)** | Call the agent programmatically from SQL queries, stored procedures, or notebooks |
 | **Streamlit apps** | Build custom chat interfaces powered by the agent (Session 6) |

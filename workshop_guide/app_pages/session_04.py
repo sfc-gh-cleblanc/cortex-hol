@@ -113,7 +113,15 @@ These sample questions appear in the agent's chat interface to help users get st
 
 st.write("")
 
-st.markdown("##### Step 6: Test the agent")
+st.markdown("##### Step 6: Save the agent")
+with st.container(border=True):
+    st.markdown("""
+Click the **Save** button to save all your configuration — instructions, tools, and sample questions. The agent must be saved before it can be tested.
+""")
+
+st.write("")
+
+st.markdown("##### Step 7: Test the agent")
 with st.container(border=True):
     st.markdown("""
 1. Click the **Preview** tab to open the agent's chat interface
@@ -130,13 +138,7 @@ Observe how the agent routes each question to the semantic view, generates SQL, 
 
 st.write("")
 
-st.markdown("##### Step 7: Save and publish")
-with st.container(border=True):
-    st.markdown("""
-1. Review your agent configuration
-2. Click **Create** to save the agent
-3. The agent is now available for use in CoWork (Session 5) and via the API
-""")
+st.markdown("---")
 
 st.markdown("---")
 

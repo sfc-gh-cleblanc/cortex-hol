@@ -84,46 +84,45 @@ st.dataframe(insights)
 """)
 
 
-PROMPT_6_2 = """Show me the SQL to verify the Streamlit app and compute pool:
+PROMPT_6_2 = """Fix the errors shown on this dashboard"""
 
-1. SHOW COMPUTE POOLS;
-2. SHOW STREAMLITS IN SCHEMA DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS;
-3. Describe the streamlit CLAIMS_DASHBOARD;
+st.markdown("##### 6.2 — Test and Fix Errors")
 
-Also provide me with the direct URL to open the Streamlit app in Snowsight."""
+with st.container(border=True):
+    st.markdown("""
+1. Open the `streamlit_app.py` file in the Workspaces editor
+2. Click **Run** in the top-right to preview the dashboard
 
-render_prompt("6.2", "Verify & Access the App", PROMPT_6_2)
+**Are there any errors?** It's common for the Streamlit skill to assume packages are available that aren't yet installed, or to reference columns slightly differently than expected. If you see errors on the dashboard:
+
+3. Paste the following into Cortex Code:
+""")
+    st.code("Fix the errors shown on this dashboard", language="text", wrap_lines=True)
+    st.markdown("""
+4. Click **Keep All** to accept all of the code updates Cortex Code suggests
+5. Click **Run** again in the code page to reload the dashboard
+6. Repeat steps 3-5 if any errors remain — keep iterating until the dashboard loads cleanly
+""")
 
 st.success("""
-:material/rocket_launch: **Preview and Deploy your app!**
+:material/rocket_launch: **Deploy your app!**
 
-Once Cortex Code has generated your app files in Workspaces:
+Once the dashboard is running without errors:
 
-1. **Run** — Click the **Run** button in the top-right of the Workspaces editor to preview your app. This launches a local preview so you can see the dashboard in action.
-
-2. **Deploy** — When you're happy with the preview, click **Deploy** to publish the app to your Snowflake account. This makes it accessible to anyone with the appropriate role via Snowsight.
+1. **Review** — Confirm all KPIs, charts, and the AI Insights section are displaying correctly
+2. **Deploy** — Click **Deploy** to publish the app to your Snowflake account, making it accessible to anyone with the appropriate role via Snowsight
 
 Try modifying the app (add a chart, change KPI labels) and re-run to see changes live!
 """)
 
-render_explanation("What this prompt does", """
-Verification and access:
+render_explanation("Troubleshooting tips", """
+**Common errors and fixes:**
 
-**SHOW COMPUTE POOLS** — confirms the pool is ACTIVE with correct instance family.
+- **ModuleNotFoundError** (e.g., `plotly`, `pandas`) — The app references a package not installed in Workspaces. Cortex Code will add the missing import or switch to a built-in Streamlit chart method.
+- **Column not found** — The SQL references a column name with wrong casing or spelling. Cortex Code will query INFORMATION_SCHEMA to find the correct name.
+- **Connection errors** — Ensure `st.connection("snowflake")` is used (not `snowflake.connector`).
 
-**SHOW STREAMLITS** — lists the app with its URL endpoint.
-
-**DESCRIBE STREAMLIT** — shows main file, compute pool (confirms container runtime), and status.
-
-**Accessing the app**: SiS apps are accessible via Snowsight at:
-```
-https://app.snowflake.com/<account>/#/streamlit-apps/DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_DASHBOARD
-```
-
-**Sharing the app** with other roles:
-```sql
-GRANT USAGE ON STREAMLIT CLAIMS_DASHBOARD TO ROLE <role_name>;
-```
+**The iterative pattern:** In Workspaces, you can continuously prompt Cortex Code to fix issues, accept changes, and re-run — this rapid feedback loop is how production Streamlit apps are built and refined.
 
 This completes the workshop — you've built a full AI-powered claims analytics platform from data loading through to a deployed application!
 """)

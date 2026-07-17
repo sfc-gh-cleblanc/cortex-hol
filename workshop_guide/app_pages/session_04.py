@@ -40,42 +40,15 @@ with st.container(border=True):
 
 st.write("")
 
-st.markdown("##### Step 3: Add the semantic view as a tool")
+st.markdown("##### Step 3: Write agent instructions")
 with st.container(border=True):
     st.markdown("""
 1. Click the **Configuration** tab
-2. Click the **Tools** sub-tab
-3. Next to **Query structured data**, click the **+ Add semantic view** button
-4. Select `CLAIMS_ANALYTICS_VIEW` (the semantic view created in Session 3)
-5. Give the tool a name (e.g., `Claims Data`)
-6. Click **Generate with Cortex** to create a detailed description for the tool — this helps the agent understand when to use it
-7. Click **Add**
+2. Click the **Instructions** sub-tab
+
+**Orchestration instructions** — paste the following into the orchestration instructions box:
 """)
-
-st.markdown("""
-**Other tools you can add to agents:**
-
-| Tool type | Description |
-|-----------|-------------|
-| **Query structured data** | Semantic views — the agent generates SQL via Cortex Analyst to answer data questions |
-| **Search documents** | Cortex Search services — the agent retrieves relevant passages from unstructured document collections |
-| **Web search** | Enables the agent to search the internet for real-time information not in your Snowflake data |
-| **Custom tools** | SQL UDFs or stored procedures — extend the agent with custom business logic, calculations, or external API calls |
-
-For this workshop we'll use a single semantic view tool. In production, combining structured data + document search + custom tools creates powerful multi-capability agents.
-""")
-
-st.write("")
-
-st.markdown("##### Step 4: Write agent instructions")
-with st.container(border=True):
-    st.markdown("""
-In the **Instructions** field, paste the following:
-
-```text
-You are a dental claims analysis assistant for DentaQuest. Your role is to help
-claims analysts, managers, and executives understand claim patterns, provider
-performance, member utilization, and identify potential areas of concern.
+    st.code("""You are a dental claims analysis assistant for DentaQuest. Your role is to help claims analysts, managers, and executives understand claim patterns, provider performance, member utilization, and identify potential areas of concern.
 
 When answering questions:
 - Use the semantic view tool for all data queries about claims, members, providers, and procedures
@@ -90,8 +63,36 @@ Domain context:
 - Plan types include PPO, HMO, DHMO, and Indemnity
 - Network status affects reimbursement rates (In-Network vs Out-of-Network)
 - Key metrics: approval rate, average days to adjudicate, denial rate by reason
-- Common concerns: high-cost outlier providers, unusual procedure patterns, slow adjudication
-```
+- Common concerns: high-cost outlier providers, unusual procedure patterns, slow adjudication""", language="text", wrap_lines=True)
+    st.markdown("""
+**Response instructions** — paste the following into the response instructions box:
+""")
+    st.code("Always use charts and visualizations to show data whenever possible. Prefer bar charts for comparisons, line charts for trends over time, and tables for detailed breakdowns.", language="text", wrap_lines=True)
+
+st.write("")
+
+st.markdown("##### Step 4: Add the semantic view as a tool")
+with st.container(border=True):
+    st.markdown("""
+1. Click the **Tools** sub-tab (still under Configuration)
+2. Next to **Query structured data**, click the **+ Add semantic view** button
+3. Select `CLAIMS_ANALYTICS_VIEW` (the semantic view created in Session 3)
+4. Give the tool a name (e.g., `Claims Data`)
+5. Click **Generate with Cortex** to create a detailed description for the tool — this helps the agent understand when to use it
+6. Click **Add**
+""")
+
+st.markdown("""
+**Other tools you can add to agents:**
+
+| Tool type | Description |
+|-----------|-------------|
+| **Query structured data** | Semantic views — the agent generates SQL via Cortex Analyst to answer data questions |
+| **Search documents** | Cortex Search services — the agent retrieves relevant passages from unstructured document collections |
+| **Web search** | Enables the agent to search the internet for real-time information not in your Snowflake data |
+| **Custom tools** | SQL UDFs or stored procedures — extend the agent with custom business logic, calculations, or external API calls |
+
+For this workshop we'll use a single semantic view tool. In production, combining structured data + document search + custom tools creates powerful multi-capability agents.
 """)
 
 st.write("")

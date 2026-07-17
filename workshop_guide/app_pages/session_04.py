@@ -43,10 +43,26 @@ st.write("")
 st.markdown("##### Step 3: Add the semantic view as a tool")
 with st.container(border=True):
     st.markdown("""
-1. In the **Tools** section, click **Add Tool**
-2. Select **Semantic View** as the tool type
-3. Choose `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_ANALYTICS_VIEW`
-4. This gives the agent the ability to query your claims data via natural language
+1. Click the **Configuration** tab
+2. Click the **Tools** sub-tab
+3. Next to **Query structured data**, click the **+ Add semantic view** button
+4. Select `CLAIMS_ANALYTICS_VIEW` (the semantic view created in Session 3)
+5. Give the tool a name (e.g., `Claims Data`)
+6. Click **Generate with Cortex** to create a detailed description for the tool — this helps the agent understand when to use it
+7. Click **Add**
+""")
+
+st.markdown("""
+**Other tools you can add to agents:**
+
+| Tool type | Description |
+|-----------|-------------|
+| **Query structured data** | Semantic views — the agent generates SQL via Cortex Analyst to answer data questions |
+| **Search documents** | Cortex Search services — the agent retrieves relevant passages from unstructured document collections |
+| **Web search** | Enables the agent to search the internet for real-time information not in your Snowflake data |
+| **Custom tools** | SQL UDFs or stored procedures — extend the agent with custom business logic, calculations, or external API calls |
+
+For this workshop we'll use a single semantic view tool. In production, combining structured data + document search + custom tools creates powerful multi-capability agents.
 """)
 
 st.write("")

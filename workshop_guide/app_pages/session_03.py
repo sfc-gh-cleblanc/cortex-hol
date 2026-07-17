@@ -90,6 +90,35 @@ For each relationship:
 Repeat for all 4 relationships to ensure Cortex Analyst can join across your tables correctly.
 """)
 
+st.write("")
+
+st.markdown("##### Step 7: Add a verified query")
+with st.container(border=True):
+    st.markdown("""
+**Verified queries** are pre-validated question-and-SQL pairs that guarantee Cortex Analyst returns the correct result for specific questions. They are one of the most important tools for improving accuracy in production.
+
+**Why verified queries matter:**
+- They act as "ground truth" — when a user asks a question that matches a verified query, Analyst returns the exact SQL you specified rather than generating its own
+- They handle edge cases, business-specific logic, and complex joins that the model might get wrong
+- They build trust with end users by ensuring critical questions always produce correct answers
+- Over time, they also help the model learn patterns for similar (non-verified) questions
+
+**How Cortex suggests verified queries:**
+In production accounts, Cortex will analyze your query history and suggest verified queries based on frequently asked questions. Since we're working in a trial account with limited history, we'll add one manually.
+
+**To add a verified query:**
+1. In the semantic view editor, navigate to the **Verified Queries** section
+2. Click **Add Verified Query**
+3. Enter a question: `What is the overall claim approval rate?`
+4. Enter the corresponding SQL:
+```sql
+SELECT
+    ROUND(COUNT(CASE WHEN STATUS = 'Approved' THEN 1 END) * 100.0 / COUNT(*), 1) AS approval_rate_pct
+FROM DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS;
+```
+5. Save the verified query
+""")
+
 st.markdown("---")
 
 st.markdown("#### :material/chat: Test with Natural Language Queries")

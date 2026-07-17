@@ -20,31 +20,17 @@ Paste the prompts below into Cortex Code **within Workspaces** so the generated 
 """)
 
 
-PROMPT_6_1 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, create a Streamlit app called CLAIMS_DASHBOARD that runs on the container runtime.
+PROMPT_6_1 = """In DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS, create a Streamlit app called CLAIMS_DASHBOARD. This Dashboard should display the following:
 
-First, create a compute pool for the app:
-- Name: CLAIMS_COMPUTE_POOL
-- Use the CPU_X64_S instance family
-- Min and max nodes of 1
-
-Then create the Streamlit app on that compute pool with a single-page dashboard:
-
-CLAIMS OPERATIONS DASHBOARD:
 - KPI cards at the top showing: Total Claims (from CLAIMS), Approval Rate (% with status 'Approved'), Avg Days to Adjudicate (DATEDIFF between DATE_OF_SERVICE and ADJUDICATION_DATE for processed claims), Total Paid (SUM of PAID_AMOUNT)
 - A pie chart showing claims by status (Approved, Denied, Pending, In Review)
 - A bar chart of top 10 procedures by total billed amount (join CLAIMS to DENTAL_PROCEDURES for procedure descriptions)
 - A line chart showing monthly claim volume over time
 - An AI Insights section at the bottom that uses AI_CLASSIFY on 5 recent claim notes to show real-time claim categorization
 
-Important for container runtime:
-- Create an External Access Integration that allows access to pypi.org and files.pythonhosted.org
-- Create a network rule for these hosts, then an integration referencing it
-- Set EXTERNAL_ACCESS_INTEGRATIONS on the Streamlit app
-- Include a pyproject.toml with dependencies: ["streamlit[snowflake]>=1.50.0", "plotly", "pandas"]
-- Use st.connection("snowflake") for the Snowflake connection
-- Make it visually clean with st.columns for layout and proper formatting
+Include a tab in the dashboard that gives descriptions of each of the metrics, where the data is coming from and how often it is updated.
 
-Execute all SQL to create the compute pool, stage the files, and deploy the app."""
+Use st.connection("snowflake") for the Snowflake connection and make it visually clean with st.columns for layout."""
 
 render_prompt("Prompt 6.1", "Create the Streamlit App", PROMPT_6_1)
 

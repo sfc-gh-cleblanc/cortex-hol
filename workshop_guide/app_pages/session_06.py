@@ -32,7 +32,7 @@ Include a tab in the dashboard that gives descriptions of each of the metrics, w
 
 Use st.connection("snowflake") for the Snowflake connection and make it visually clean with st.columns for layout."""
 
-render_prompt("Prompt 6.1", "Create the Streamlit App", PROMPT_6_1)
+render_prompt("6.1", "Create the Streamlit App", PROMPT_6_1)
 
 render_explanation("What this prompt does", """
 Creates a full **Streamlit in Snowflake** application on the **container runtime**:
@@ -92,7 +92,7 @@ PROMPT_6_2 = """Show me the SQL to verify the Streamlit app and compute pool:
 
 Also provide me with the direct URL to open the Streamlit app in Snowsight."""
 
-render_prompt("Prompt 6.2", "Verify & Access the App", PROMPT_6_2)
+render_prompt("6.2", "Verify & Access the App", PROMPT_6_2)
 
 st.success("""
 :material/rocket_launch: **Preview and Deploy your app!**

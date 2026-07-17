@@ -150,16 +150,13 @@ with st.container(border=True):
     st.markdown("""
 Want to take your dashboard further? Add a chat box that lets users ask natural language questions about the data, powered by `AI_COMPLETE`.
 
-Paste this into Cortex Code while in Workspaces:
-""")
-    st.code("""Add a new tab to the dashboard called 'Ask AI' with a chat interface. Use st.chat_input and st.chat_message to create a conversational UI. When the user asks a question, use SNOWFLAKE.CORTEX.COMPLETE with the model 'claude-sonnet-4-6' to answer it. Include context about the claims data in the prompt — pass the current KPI values (total claims, approval rate, avg days to adjudicate, total paid) as context so the model can reference actual data in its answers. Maintain chat history in st.session_state.""", language="text", wrap_lines=True)
-    st.markdown("""
-After adding, click **Keep All** and **Run** to test. Try asking questions like:
-- "Why might our denial rate be increasing?"
-- "What should we investigate if average adjudication time is rising?"
-- "Summarize the health of our claims operations"
+Using what you've learned, write a prompt for Cortex Code in Workspaces that adds an "Ask AI" tab with a conversational chat interface. Consider:
+- Using `st.chat_input` and `st.chat_message` for the UI
+- Calling `SNOWFLAKE.CORTEX.COMPLETE` with a model like `claude-sonnet-4-6`
+- Passing current KPI values as context so the model can reference actual data
+- Maintaining chat history in `st.session_state`
 
-This demonstrates how `AI_COMPLETE` can power conversational interfaces directly within Streamlit apps — giving users an AI assistant embedded alongside their operational dashboards.
+After adding, click **Keep All** and **Run** to test. This demonstrates how `AI_COMPLETE` can power conversational interfaces directly within Streamlit apps — giving users an AI assistant embedded alongside their operational dashboards.
 """)
 
 st.markdown("---")

@@ -48,5 +48,5 @@ with st.container(border=True):
     st.markdown("""
 :material/schedule: **~4 hours** (including 15-minute break between Block 1 and Block 2)
 
-Sun Life DentaQuest Workshop — July 20, 2026
+Dental Claims AI Workshop — July 20, 2026
 """)

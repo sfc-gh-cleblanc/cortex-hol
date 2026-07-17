@@ -31,7 +31,7 @@ st.caption("Copy and paste each question into CoWork individually. They build on
 
 questions = [
     ("1. Portfolio Overview", "Show me an overview of our dental claims portfolio — total claims processed, approval rate, average payout amount, and total dollars paid."),
-    ("2. Verified Query", "What is the overall claim approval rate?"),
+    ("2. Approval metrics", "What percentage of our claims are getting approved?"),
     ("3. Denial Patterns", "What are the most common denial reasons and which procedure categories have the highest denial rates? Are there patterns we should investigate?"),
     ("4. Plan Comparison", "Compare claim outcomes across our plan types (PPO, HMO, DHMO, Indemnity). Which plans have the best approval rates and fastest adjudication?"),
     ("5. Geographic Analysis", "Break down our claims by member state. Which states have the highest average claim amounts and denial rates?"),
@@ -45,6 +45,10 @@ for i, (title, question) in enumerate(questions):
     if i == 0:
         st.info("""
 :material/save: **Save the chart as an artifact:** After CoWork responds with a visualization, click the **Save** icon on the chart to save it as an artifact. Artifacts persist in your CoWork session and can be referenced later, shared with teammates, or added to reports.
+""")
+    if i == 1:
+        st.info("""
+:material/verified: **Notice:** Even though this question is phrased differently from the verified query we created in Session 3 ("What is the overall claim approval rate?"), Cortex Analyst recognizes the intent matches and invokes the verified query. This means the results are guaranteed correct — you can trust the SQL and output because it was pre-validated.
 """)
 
 st.write("")

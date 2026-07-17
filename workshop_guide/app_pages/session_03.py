@@ -108,7 +108,7 @@ In production accounts, Cortex will analyze your query history and suggest verif
 
 **To add a verified query:**
 1. In the suggestions box, click the **Add a verified query** button
-2. Enter a question: `What is the overall claim approval rate?`
+2. Enter a question: `What are the total claims processed, the approval rate, average payout amount and total dollars paid?`
 3. Click **Generate SQL** to view the generated SQL
 4. Click **Run** to execute the query and confirm expected results
 5. Click **Save and continue** to add this as a verified query

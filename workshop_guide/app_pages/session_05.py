@@ -46,6 +46,9 @@ for i, (title, question) in enumerate(questions):
         st.info("""
 :material/save: **Save the chart as an artifact:** After CoWork responds with a visualization, click the **Save** icon on the chart to save it as an artifact. Artifacts persist in your CoWork session and can be referenced later, shared with teammates, or added to reports.
 """)
+        st.success("""
+:material/verified: **Verified query in action:** This question matches the verified query we created in Session 3. Because Cortex Analyst recognizes the intent, it uses the pre-validated SQL rather than generating new SQL — giving you confidence that this result is accurate and trustworthy.
+""")
 
 st.info("""
 :material/lightbulb: **Tip — MCP Integration:** If CoWork were connected to your email system via MCP (Model Context Protocol) under **Capabilities**, you could ask it to automatically draft and send that executive summary directly to your key stakeholders — no copy-paste required. MCP connectors allow CoWork to take actions in external systems like email, Slack, Jira, and more, turning analysis into automated workflows.

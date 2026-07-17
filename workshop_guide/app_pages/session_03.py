@@ -109,13 +109,9 @@ In production accounts, Cortex will analyze your query history and suggest verif
 **To add a verified query:**
 1. In the suggestions box, click the **Add a verified query** button
 2. Enter a question: `What is the overall claim approval rate?`
-3. Enter the corresponding SQL:
-```sql
-SELECT
-    ROUND(COUNT(CASE WHEN STATUS = 'Approved' THEN 1 END) * 100.0 / COUNT(*), 1) AS approval_rate_pct
-FROM DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS;
-```
-4. Save the verified query
+3. Click **Generate SQL** to view the generated SQL
+4. Click **Run** to execute the query and confirm expected results
+5. Click **Save and continue** to add this as a verified query
 """)
 
 st.markdown("---")

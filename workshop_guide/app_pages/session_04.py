@@ -32,9 +32,10 @@ st.write("")
 st.markdown("##### Step 2: Configure the agent")
 with st.container(border=True):
     st.markdown("""
-1. **Name**: `CLAIMS_ANALYST_AGENT`
-2. **Location**: `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS`
-3. **Model**: Select `auto` (lets Snowflake choose the best available model)
+1. Set the database to **DENTAL_CLAIMS_AI** and schema to **CLAIMS_ANALYTICS**
+2. Enter the object name: `CLAIMS_ANALYST_AGENT`
+3. Enter the display name: `Claims Analyst Agent`
+4. Click **Create agent**
 """)
 
 st.write("")

@@ -31,7 +31,7 @@ st.caption("Copy and paste each question into CoWork individually. They build on
 
 questions = [
     ("1. Portfolio Overview", "Show me an overview of our dental claims portfolio — total claims processed, approval rate, average payout amount, and total dollars paid."),
-    ("2. Provider Outliers", "Which providers are billing significantly above average for common procedures like cleanings (D1110) and fillings (D2330, D2391)? Show me the outliers."),
+    ("2. Verified Query", "What is the overall claim approval rate?"),
     ("3. Denial Patterns", "What are the most common denial reasons and which procedure categories have the highest denial rates? Are there patterns we should investigate?"),
     ("4. Plan Comparison", "Compare claim outcomes across our plan types (PPO, HMO, DHMO, Indemnity). Which plans have the best approval rates and fastest adjudication?"),
     ("5. Geographic Analysis", "Break down our claims by member state. Which states have the highest average claim amounts and denial rates?"),

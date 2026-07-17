@@ -24,8 +24,7 @@ with st.container(border=True):
     st.markdown("""
 1. In Snowsight, navigate to **AI & ML** in the left sidebar
 2. Click **Cortex Analyst**
-3. Click **Create Semantic View** (or the **+** button)
-4. Select **Autopilot** as the creation method
+3. Click the **Create with Autopilot** button in the top right
 """)
 
 st.write("")

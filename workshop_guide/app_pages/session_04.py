@@ -100,12 +100,15 @@ st.write("")
 st.markdown("##### Step 5: Add sample questions")
 with st.container(border=True):
     st.markdown("""
-Add these sample questions to help users understand what the agent can do:
-
-1. "What is our overall claim approval rate and how does it vary by plan type?"
-2. "Which providers have the highest average billed amount per claim?"
-3. "What are the most common denial reasons and their frequency?"
-4. "Show me the monthly trend in claim volume for 2025"
+1. Click the **General** sub-tab (under Configuration)
+2. Click **Add question** for each of the following sample questions:
+""")
+    st.code("What is our overall claim approval rate and how does it vary by plan type?", language="text", wrap_lines=True)
+    st.code("Which providers have the highest average billed amount per claim?", language="text", wrap_lines=True)
+    st.code("What are the most common denial reasons and their frequency?", language="text", wrap_lines=True)
+    st.code("Show me the monthly trend in claim volume for 2025", language="text", wrap_lines=True)
+    st.markdown("""
+These sample questions appear in the agent's chat interface to help users get started.
 """)
 
 st.write("")

@@ -7,19 +7,19 @@ st.write("")
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Sections", "6", help="Hands-on lab sections")
-col2.metric("Prompts", "10", help="Total prompts across all tools")
-col3.metric("Duration", "~4 hrs", help="Total workshop time including break")
+col2.metric("Duration", "~4 hrs", help="Total workshop time including break")
+col3.metric("Tools", "5", help="Cortex Code, Analyst, Agents, CoWork, Streamlit")
 
 st.write(""); st.write("")
 
 st.markdown("#### How this workshop works")
 
 st.markdown("""
-Each section has **numbered prompts** that you copy and paste into the appropriate tool, or **step-by-step UI instructions** to follow in Snowsight:
+This guide provides **step-by-step instructions** for each session. You'll work through a mix of:
 
-- **Cortex Code** — for building infrastructure, creating objects, and writing SQL/Python
-- **Snowsight UI** — for creating semantic views (Autopilot) and agents
-- **Snowflake CoWork** — for collaborative data exploration and analysis
+- **Cortex Code prompts** — copy into Cortex Code to build infrastructure and write SQL/Python
+- **Snowsight UI walkthroughs** — follow guided steps to create semantic views and agents
+- **Interactive exploration** — paste questions into CoWork for collaborative analysis
 
 All sections build on each other sequentially — work through them in order.
 """)
@@ -29,7 +29,7 @@ st.write("")
 st.markdown("#### The scenario")
 with st.container(border=True):
     st.markdown("""
-**Sun Life DentaQuest** processes millions of dental insurance claims annually. Claims analysts need to
+A dental insurance company processes millions of claims annually. Claims analysts need to
 extract insights from clinical notes, identify patterns in denials, monitor provider performance, and
 detect potential fraud or waste — all while maintaining fast adjudication turnaround times.
 
@@ -52,7 +52,7 @@ In this workshop, we build a complete AI-powered claims analytics platform:
 
 **1. Data Foundation** — Load structured claims data and unstructured clinical documents into Snowflake.
 
-**2. AI-Powered Extraction** — Use Cortex AI functions (AI_EXTRACT, AI_CLASSIFY) to transform unstructured claim notes and documents into queryable structured data at scale.
+**2. AI-Powered Extraction** — Use Cortex AI functions (AI_EXTRACT, AI_CLASSIFY, AI_COMPLETE) to transform unstructured claim notes and documents into queryable structured data at scale.
 
 **3. Natural Language Analytics** — Create a Semantic View over claims tables using the Autopilot and query them with plain English via Cortex Analyst.
 
@@ -74,4 +74,4 @@ with st.container(border=True):
 """)
 
 st.write(""); st.write("")
-st.caption("Sun Life DentaQuest Workshop — July 20, 2026")
+st.caption("Dental Claims AI Workshop — July 20, 2026")

@@ -14,9 +14,12 @@ st.markdown("---")
 st.markdown("#### :material/open_in_new: Open CoWork")
 with st.container(border=True):
     st.markdown("""
-In Snowsight, click **CoWork** in the left navigation panel. Start a new conversation.
+Open Snowflake CoWork using one of these methods:
 
-CoWork provides a chat-based interface that leverages your Cortex Agent to query data, create visualizations, and generate insights. It uses the `CLAIMS_ANALYST_AGENT` you created in Session 4.
+- **In Snowsight:** Navigate to **AI & ML** in the left sidebar and select **Snowflake CoWork**
+- **In any browser:** Go to **[ai.snowflake.com](https://ai.snowflake.com)**
+
+Start a new conversation. CoWork will have access to the `CLAIMS_ANALYST_AGENT` you added in Session 4.
 
 Paste each question below into CoWork one at a time and observe how it generates queries and visualizations.
 """)

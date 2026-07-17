@@ -104,15 +104,28 @@ with st.container(border=True):
 6. Repeat steps 3-5 if any errors remain — keep iterating until the dashboard loads cleanly
 """)
 
-st.success("""
-:material/rocket_launch: **Deploy your app!**
+st.write("")
 
-Once the dashboard is running without errors:
+st.markdown("##### 6.3 — Deploy Your App")
 
-1. **Review** — Confirm all KPIs, charts, and the AI Insights section are displaying correctly
-2. **Deploy** — Click **Deploy** to publish the app to your Snowflake account, making it accessible to anyone with the appropriate role via Snowsight
+with st.container(border=True):
+    st.markdown("""
+Once the dashboard is running without errors, deploy it so others can discover and use it:
 
-Try modifying the app (add a chart, change KPI labels) and re-run to see changes live!
+1. Click the **Deploy** button in the top-right of the Workspaces editor
+2. Select the database: **DENTAL_CLAIMS_AI**
+3. Select the schema: **CLAIMS_ANALYTICS**
+4. Click **Deploy** to publish
+
+Once deployed, the app becomes a first-class Snowflake object. Other users in your account can discover it from the **Projects > Streamlit** menu in Snowsight and access it based on their role permissions.
+""")
+
+st.info("""
+:material/lightbulb: **Sharing your app:** After deployment, grant access to other roles:
+```sql
+GRANT USAGE ON STREAMLIT DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_DASHBOARD TO ROLE <role_name>;
+```
+This is how teams publish internal data apps — analysts build in Workspaces, deploy to a shared schema, and stakeholders access via the Streamlit projects menu.
 """)
 
 render_explanation("Troubleshooting tips", """

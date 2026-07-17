@@ -146,38 +146,41 @@ Creates a materialized extraction table — the core pattern for production AI p
 
 ```sql
 CREATE OR REPLACE TABLE EXTRACTED_CLAIM_INSIGHTS AS
-SELECT
-    cn.note_id,
-    cn.claim_id,
-    cn.adjuster,
-    cn.created_date,
-    extracted:tooth_number::VARCHAR AS tooth_number,
-    extracted:procedure_type::VARCHAR AS procedure_type,
-    extracted:clinical_finding::VARCHAR AS clinical_finding,
-    extracted:pre_auth_required::VARCHAR AS pre_auth_required,
-    extracted:urgency::VARCHAR AS urgency,
-    SNOWFLAKE.CORTEX.COMPLETE(
-        'claude-sonnet-4-6',
-        'Based on this dental claim with clinical finding: ' ||
-        extracted:clinical_finding::VARCHAR ||
-        ' and urgency level: ' || extracted:urgency::VARCHAR ||
-        ', provide a single concise sentence recommendation for the claims adjuster.'
-    ) AS recommendation
-FROM (
+WITH extracted AS (
     SELECT
-        *,
+        NOTE_ID,
+        CLAIM_ID,
+        ADJUSTER,
+        NOTE_TEXT,
+        CREATED_DATE,
         AI_EXTRACT(
-            text => note_text,
-            responseFormat => {
-                'tooth_number': 'What tooth number is referenced?',
-                'procedure_type': 'What dental procedure is discussed?',
-                'clinical_finding': 'What is the primary clinical finding?',
+            NOTE_TEXT,
+            {
+                'tooth_number': 'What tooth number is referenced (e.g., #14, #3)?',
+                'procedure_type': 'What dental procedure is being discussed or recommended?',
+                'clinical_finding': 'What is the primary clinical finding or diagnosis?',
                 'pre_auth_required': 'Is pre-authorization required? (yes/no/not mentioned)',
-                'urgency': 'How urgent? (routine/urgent/emergency)'
+                'urgency': 'How urgent is the treatment? (routine/urgent/emergency)'
             }
-        ) AS extracted
+        ) AS result
     FROM CLAIM_NOTES
-) cn;
+)
+SELECT
+    NOTE_ID,
+    CLAIM_ID,
+    ADJUSTER,
+    CREATED_DATE,
+    result:response:tooth_number::VARCHAR AS TOOTH_NUMBER,
+    result:response:procedure_type::VARCHAR AS PROCEDURE_TYPE,
+    result:response:clinical_finding::VARCHAR AS CLINICAL_FINDING,
+    result:response:pre_auth_required::VARCHAR AS PRE_AUTH_REQUIRED,
+    result:response:urgency::VARCHAR AS URGENCY,
+    AI_COMPLETE(
+        'claude-sonnet-4-6',
+        'You are a dental claims advisor. Based on the following clinical finding and urgency level, provide exactly one actionable recommendation sentence (no more than 20 words). Clinical finding: '
+        || result:response:clinical_finding::VARCHAR || '. Urgency: ' || result:response:urgency::VARCHAR || '.'
+    )::VARCHAR AS RECOMMENDATION
+FROM extracted;
 ```
 
 **AI_COMPLETE** is the general-purpose LLM function. Unlike AI_EXTRACT (structured extraction) and AI_CLASSIFY (categorization), AI_COMPLETE generates free-form text. Here it produces actionable next steps tailored to each claim's specific clinical context — all computed inline as part of the CTAS.

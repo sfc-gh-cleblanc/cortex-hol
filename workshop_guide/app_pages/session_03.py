@@ -1,5 +1,5 @@
 import streamlit as st
-from components import render_session_header, render_prompt, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
+from components import render_session_header, render_explanation, render_technologies_used, render_key_concepts, render_what_you_built
 
 render_session_header(3, "Cortex Analyst & Semantic Views", "35 min", "Semantic view created via Autopilot, tested with natural language queries")
 
@@ -131,26 +131,39 @@ A well-written description helps both AI agents and human users understand when 
 This description will be visible to Cortex Agents when they evaluate which tool to use for a given question — the more specific and comprehensive it is, the better the agent's tool routing will be.
 """)
 
+st.write("")
+
+st.markdown("##### Step 9: Save the semantic view")
+with st.container(border=True):
+    st.markdown("""
+Click **Save** to accept all the changes you've made — relationships, verified query, and description. Your semantic view is now ready for use with Cortex Analyst and Cortex Agents.
+""")
+
 st.markdown("---")
 
 st.markdown("#### :material/chat: Test with Natural Language Queries")
 
-PROMPT_3_1 = """Ask Cortex Analyst these questions using DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS.CLAIMS_ANALYTICS_VIEW:
+st.markdown("""
+Click the **Playground** tab on the right side of the semantic view editor. This opens an interactive chat where you can test natural language questions against your view.
 
-1. "What are the top 5 procedures by total billed amount?"
-2. "Which providers have the highest claim denial rate?"
-3. "Show me monthly claim volume trends by plan type for 2025"
-4. "What is the average time from date of service to adjudication for approved vs denied claims?"
-5. "What are the most common procedures for members in Massachusetts?"
+Enter each question below one at a time and click **Run** to see the generated SQL and results:
+""")
 
-Show the generated SQL and results for each."""
+questions = [
+    ("1. Procedure costs", "What are the top 5 procedures by total billed amount?"),
+    ("2. Denial rates", "Which providers have the highest claim denial rate?"),
+    ("3. Volume trends", "Show me monthly claim volume trends by plan type for 2025"),
+    ("4. Processing time", "What is the average time from date of service to adjudication for approved vs denied claims?"),
+    ("5. Geographic patterns", "What are the most common procedures for members in Massachusetts?"),
+]
 
-render_prompt("Prompt 3.1", "Test with Natural Language Queries", PROMPT_3_1)
+for title, question in questions:
+    with st.container(border=True):
+        st.markdown(f"**{title}**")
+        st.code(question, language="text", wrap_lines=True)
 
 st.info("""
-:material/lightbulb: **You can also test these in the Cortex Analyst UI!**
-
-In Snowsight, navigate to **AI & ML > Cortex Analyst** in the left sidebar. Select your `CLAIMS_ANALYTICS_VIEW` semantic view, and you'll see a playground where you can type natural language questions and see the generated SQL and results interactively.
+:material/lightbulb: **Tip:** If any of these test questions produce particularly useful results, you can save them as additional verified queries directly from the Playground by clicking the save option on the result.
 """)
 
 render_explanation("What these queries test", """

@@ -187,6 +187,15 @@ render_key_concepts([
     {"term": "Sample Questions", "definition": "Seed questions displayed to users in the agent UI. Help users understand what the agent can do and provide starting points for exploration."},
 ])
 
+st.write("")
+
+st.markdown("##### :material/science: Advanced topics (not covered in this workshop)")
+
+render_key_concepts([
+    {"term": "Agent Evaluations", "definition": "A systematic process for measuring agent quality. Evaluations run a set of test questions against your agent and score the responses on metrics like correctness, relevance, and SQL accuracy. They help you quantify improvements when you change instructions, add tools, or modify the semantic view — turning agent development from guesswork into a data-driven iteration loop."},
+    {"term": "Agent Observability", "definition": "Monitoring and tracing how your agent performs in production. Observability tracks metrics like response latency, tool call frequency, error rates, and user satisfaction. It also provides trace-level visibility into each agent turn — which tools were called, what SQL was generated, and where failures occur. This helps identify issues before users report them and prioritize improvements based on real usage patterns."},
+])
+
 render_what_you_built([
     "CLAIMS_ANALYST_AGENT — Cortex Agent with semantic view tool",
     "Custom instructions for dental claims analysis domain",

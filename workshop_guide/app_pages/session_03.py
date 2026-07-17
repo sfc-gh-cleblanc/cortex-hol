@@ -122,10 +122,10 @@ with st.container(border=True):
 A well-written description helps both AI agents and human users understand when to use this semantic view. When a Cortex Agent has multiple tools available, it uses the view description to decide whether this is the right tool for a given question.
 
 1. Click the **Edit** button (pencil icon) to the right of the view name at the top
-2. In the description field, enter a comprehensive description such as:
-
-> Dental claims analytics for DentaQuest covering member enrollment, claim submissions, provider performance, procedure costs, and adjudication outcomes. Use this view for questions about claim volumes, approval/denial rates, billed and paid amounts, processing times, provider network analysis, member demographics, procedure utilization, and AI-extracted clinical insights from adjuster notes.
-
+2. In the description field, paste the following description:
+""")
+    st.code("Dental claims analytics for DentaQuest covering member enrollment, claim submissions, provider performance, procedure costs, and adjudication outcomes. Use this view for questions about claim volumes, approval/denial rates, billed and paid amounts, processing times, provider network analysis, member demographics, procedure utilization, and AI-extracted clinical insights from adjuster notes.", language="text", wrap_lines=True)
+    st.markdown("""
 3. Save the changes
 
 This description will be visible to Cortex Agents when they evaluate which tool to use for a given question — the more specific and comprehensive it is, the better the agent's tool routing will be.

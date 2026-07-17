@@ -5,13 +5,6 @@ st.markdown("Building Intelligence for Claims Analysis with Snowflake Cortex")
 
 st.write("")
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Sections", "6", help="Hands-on lab sections")
-col2.metric("Duration", "~4 hrs", help="Total workshop time including break")
-col3.metric("Tools", "5", help="Cortex Code, Analyst, Agents, CoWork, Streamlit")
-
-st.write(""); st.write("")
-
 st.markdown("#### How this workshop works")
 
 st.markdown("""

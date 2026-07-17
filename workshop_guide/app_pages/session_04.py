@@ -116,15 +116,16 @@ st.write("")
 st.markdown("##### Step 6: Test the agent")
 with st.container(border=True):
     st.markdown("""
-Use the built-in chat interface to test your agent with these queries:
-
-1. **Basic analytics**: "What is our total claims volume and approval rate?"
-2. **Provider analysis**: "Which providers are billing significantly above average for routine procedures?"
-3. **Trend analysis**: "How has our denial rate changed month over month?"
-4. **Cross-dimensional**: "Compare claim outcomes across plan types — which plans have the best approval rates?"
-5. **Actionable insight**: "What are the top 3 areas where we could reduce claim denials?"
-
-Observe how the agent routes each question to the semantic view, generates SQL, and synthesizes a conversational response.
+1. Click the **Preview** tab to open the agent's chat interface
+2. Test your agent by entering these queries one at a time:
+""")
+    st.code("What is our total claims volume and approval rate?", language="text", wrap_lines=True)
+    st.code("Which providers are billing significantly above average for routine procedures?", language="text", wrap_lines=True)
+    st.code("How has our denial rate changed month over month?", language="text", wrap_lines=True)
+    st.code("Compare claim outcomes across plan types — which plans have the best approval rates?", language="text", wrap_lines=True)
+    st.code("What are the top 3 areas where we could reduce claim denials?", language="text", wrap_lines=True)
+    st.markdown("""
+Observe how the agent routes each question to the semantic view, generates SQL, and synthesizes a conversational response with charts.
 """)
 
 st.write("")

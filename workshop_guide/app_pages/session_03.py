@@ -19,21 +19,6 @@ In this session, you'll use the **Semantic View Autopilot** to create a semantic
 
 st.write("")
 
-st.markdown("##### Step 6: Confirm relationships")
-with st.container(border=True):
-    st.markdown("""
-When the Autopilot completes its analysis, it will make several suggestions. Scroll down to the **Relationships** section. There will be 4 relationships detected — these define the table joins that Cortex Analyst will use when generating SQL.
-
-For each relationship:
-1. Click the relationship
-2. Click **Review**
-3. Click **Add** to include it within the semantic view
-
-Repeat for all 4 relationships to ensure Cortex Analyst can join across your tables correctly.
-""")
-
-st.write("")
-
 st.markdown("##### Step 1: Open the Semantic View Autopilot")
 with st.container(border=True):
     st.markdown("""
@@ -88,6 +73,21 @@ with st.container(border=True):
 2. Click **Create** to complete the wizard
 
 The Autopilot will analyze your tables and generate a semantic view with auto-detected relationships, dimensions, facts, metrics, and synonyms. This may take a moment.
+""")
+
+st.write("")
+
+st.markdown("##### Step 6: Confirm relationships")
+with st.container(border=True):
+    st.markdown("""
+When the Autopilot completes its analysis, it will make several suggestions. Scroll down to the **Relationships** section. There will be 4 relationships detected — these define the table joins that Cortex Analyst will use when generating SQL.
+
+For each relationship:
+1. Click the relationship
+2. Click **Review**
+3. Click **Add** to include it within the semantic view
+
+Repeat for all 4 relationships to ensure Cortex Analyst can join across your tables correctly.
 """)
 
 st.markdown("---")

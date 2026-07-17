@@ -29,43 +29,48 @@ with st.container(border=True):
 
 st.write("")
 
-st.markdown("##### Step 2: Select your tables")
+st.markdown("##### Step 2: Provide context")
 with st.container(border=True):
     st.markdown("""
-1. Set the database to **DENTAL_CLAIMS_AI** and schema to **CLAIMS_ANALYTICS**
-2. Select these tables:
+The first screen asks you to describe what this semantic view is for. This helps the Autopilot understand your domain, but we'll skip it for now.
+
+1. Click **Skip** to proceed to the next step
+""")
+
+st.write("")
+
+st.markdown("##### Step 3: Name your semantic view")
+with st.container(border=True):
+    st.markdown("""
+1. Enter the name: `CLAIMS_ANALYTICS_VIEW`
+2. Set the database to **DENTAL_CLAIMS_AI**
+3. Set the schema to **CLAIMS_ANALYTICS**
+4. Click **Next**
+""")
+
+st.write("")
+
+st.markdown("##### Step 4: Select tables")
+with st.container(border=True):
+    st.markdown("""
+1. Select these tables:
    - `MEMBERS`
    - `CLAIMS`
    - `PROVIDERS`
    - `DENTAL_PROCEDURES`
    - `EXTRACTED_CLAIM_INSIGHTS` (from Session 2)
-3. Click **Generate** to let the Autopilot analyze your data
+2. Click **Next**
 """)
 
 st.write("")
 
-st.markdown("##### Step 3: Review the generated semantic view")
+st.markdown("##### Step 5: Select columns")
 with st.container(border=True):
     st.markdown("""
-The Autopilot will generate:
+1. Click **Select all** to include all columns from all selected tables
+2. Click **Create** to complete the wizard
 
-- **Relationships** — foreign key joins between tables (e.g., CLAIMS.MEMBER_ID -> MEMBERS.MEMBER_ID)
-- **Dimensions** — categorical columns for grouping/filtering (plan_type, status, state, specialty)
-- **Facts** — numeric columns for aggregation (billed_amount, paid_amount, allowed_amount)
-- **Metrics** — pre-defined aggregations (total billed, average paid, claim count)
-- **Synonyms** — alternative names users might use (e.g., "dentist" for provider, "payout" for paid_amount)
-
-**Review and accept** the generated view. You can make adjustments if needed, but the Autopilot typically produces a good starting point.
-""")
-
-st.write("")
-
-st.markdown("##### Step 4: Save the semantic view")
-with st.container(border=True):
-    st.markdown("""
-1. Give the semantic view a name (suggested: `CLAIMS_ANALYTICS_VIEW`)
-2. Save it to `DENTAL_CLAIMS_AI.CLAIMS_ANALYTICS`
-3. The view is now available for Cortex Analyst queries
+The Autopilot will analyze your tables and generate a semantic view with auto-detected relationships, dimensions, facts, metrics, and synonyms. This may take a moment.
 """)
 
 st.markdown("---")

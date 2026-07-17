@@ -126,7 +126,7 @@ A well-written description helps both AI agents and human users understand when 
 """)
     st.code("Dental claims analytics for DentaQuest covering member enrollment, claim submissions, provider performance, procedure costs, and adjudication outcomes. Use this view for questions about claim volumes, approval/denial rates, billed and paid amounts, processing times, provider network analysis, member demographics, procedure utilization, and AI-extracted clinical insights from adjuster notes.", language="text", wrap_lines=True)
     st.markdown("""
-3. Save the changes
+3. Click **Apply** to accept this update
 
 This description will be visible to Cortex Agents when they evaluate which tool to use for a given question — the more specific and comprehensive it is, the better the agent's tool routing will be.
 """)

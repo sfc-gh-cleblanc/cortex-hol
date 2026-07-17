@@ -140,6 +140,30 @@ render_explanation("Troubleshooting tips", """
 This completes the workshop — you've built a full AI-powered claims analytics platform from data loading through to a deployed application!
 """)
 
+st.write("")
+
+st.markdown("---")
+
+st.markdown("#### :material/star: Bonus: Add an AI Chat Interface")
+
+with st.container(border=True):
+    st.markdown("""
+Want to take your dashboard further? Add a chat box that lets users ask natural language questions about the data, powered by `AI_COMPLETE`.
+
+Paste this into Cortex Code while in Workspaces:
+""")
+    st.code("""Add a new tab to the dashboard called 'Ask AI' with a chat interface. Use st.chat_input and st.chat_message to create a conversational UI. When the user asks a question, use SNOWFLAKE.CORTEX.COMPLETE with the model 'claude-sonnet-4-6' to answer it. Include context about the claims data in the prompt — pass the current KPI values (total claims, approval rate, avg days to adjudicate, total paid) as context so the model can reference actual data in its answers. Maintain chat history in st.session_state.""", language="text", wrap_lines=True)
+    st.markdown("""
+After adding, click **Keep All** and **Run** to test. Try asking questions like:
+- "Why might our denial rate be increasing?"
+- "What should we investigate if average adjudication time is rising?"
+- "Summarize the health of our claims operations"
+
+This demonstrates how `AI_COMPLETE` can power conversational interfaces directly within Streamlit apps — giving users an AI assistant embedded alongside their operational dashboards.
+""")
+
+st.markdown("---")
+
 
 render_key_concepts([
     {"term": "Container Runtime", "definition": "The current SiS execution environment. Apps run on a compute pool, support any Python package via pip, and use versioned stage syntax. Replaces the legacy warehouse runtime."},

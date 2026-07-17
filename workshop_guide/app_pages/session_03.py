@@ -32,7 +32,9 @@ st.write("")
 st.markdown("##### Step 2: Provide context")
 with st.container(border=True):
     st.markdown("""
-The first screen asks you to describe what this semantic view is for. This helps the Autopilot understand your domain, but we'll skip it for now.
+While providing context is optional, it's extremely useful in creating a high-quality semantic view. Without it, the model only uses the database schema information, which might lack business nuance. The Autopilot supports several options for providing context: Tableau workbooks, Power BI reports, existing SQL queries, and others.
+
+For this workshop, we'll skip this step since our table and column names are descriptive enough for the Autopilot to work with.
 
 1. Click **Skip** to proceed to the next step
 """)
